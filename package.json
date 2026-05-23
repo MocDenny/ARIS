@@ -1,0 +1,23 @@
+{
+  "name": "aris",
+  "version": "1.0.0",
+  "description": "demo of aris interface",
+  "homepage": "https://github.com/MocDenny/ARIS#readme",
+  "bugs": {
+    "url": "https://github.com/MocDenny/ARIS/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MocDenny/ARIS.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "electron": "^42.2.0"
+  }
+}
