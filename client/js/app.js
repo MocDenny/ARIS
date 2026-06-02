@@ -1,4 +1,4 @@
-import * as api from '../routes.js'
+import * as api from '../wrapper.js'
 
 const state = {
   tab: 'lights',
