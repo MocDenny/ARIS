@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIS</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- Import Map per risolvere i moduli bare di Material Design 3 -->
+  <script type="importmap">
+        {
+            "imports": {
+                "@material/web/": "https://esm.run/@material/web/"
+            }
+        }
+    </script>
+  <script type="module">
+    import '@material/web/all.js';
+  </script>
+
+<body>
+  <div class="device" id="device">
+
+    <!-- schermata corrente -->
+    <div id="screen"></div>
+
+    <!-- sidenav — sempre visibile tranne in eco/settings -->
+    <aside class="side-nav" id="side-nav">
+      <div class="nav-pill">
+        <button class="nav-item" data-action="set-tab" data-value="lights" id="nav-lights"></button>
+        <button class="nav-item" data-action="set-tab" data-value="climate" id="nav-climate"></button>
+        <button class="nav-item" data-action="set-tab" data-value="blinds" id="nav-blinds"></button>
+      </div>
+      <button class="nav-circle" data-action="set-tab" data-value="eco" id="nav-eco"></button>
+      <button class="nav-circle" data-action="set-tab" data-value="settings" id="nav-settings"></button>
+    </aside>
+
+    <!-- roombar — sempre visibile tranne in eco/settings -->
+    <nav class="room-bar" id="room-bar"></nav>
+
+  </div>
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
