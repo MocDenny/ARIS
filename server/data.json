@@ -7,7 +7,7 @@
         "lights": [
           {
             "name": "ceiling_light_1",
-            "state": "on",
+            "state": "off",
             "brightness": 0
           },
           {
@@ -17,7 +17,7 @@
           }
         ],
         "hvac": {
-          "state": "off",
+          "state": "on",
           "target_temp": 20,
           "current_temp": 19,
           "fan": {
@@ -32,7 +32,7 @@
           },
           {
             "name": "window_blind_2",
-            "state": "open"
+            "state": "closed"
           }
         ]
       },
@@ -41,7 +41,7 @@
         "lights": [
           {
             "name": "ceiling_light_1",
-            "state": "off",
+            "state": "on",
             "brightness": 0
           }
         ],
@@ -71,8 +71,8 @@
           },
           {
             "name": "ceiling_light_2",
-            "state": "on",
-            "brightness": 50
+            "state": "off",
+            "brightness": 0
           }
         ],
         "hvac": {
@@ -87,7 +87,7 @@
         "curtains": [
           {
             "name": "window_blind_1",
-            "state": "open"
+            "state": "closed"
           },
           {
             "name": "window_blind_2",

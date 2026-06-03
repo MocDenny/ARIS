@@ -40,7 +40,7 @@ app.get("/rooms", getAllRooms);
 // Get specific room info
 app.get("/rooms/:room", getRoom);
 // Toggle light state
-app.post("/rooms/:room/lights/:index/toggle", toggleLight);
+app.post("/rooms/:room/lights/:lightName/toggle", toggleLight);
 // Set light brightness
 app.post("/rooms/:room/lights/:index/brightness", setLightBrightness);
 // Toggle HVAC state
@@ -52,7 +52,7 @@ app.post("/rooms/:room/hvac/fan/toggle", toggleFan);
 // Set fan speed
 app.post("/rooms/:room/hvac/fan/speed", setFanSpeed);
 // Set curtain position
-app.post("/rooms/:room/curtains/:index/position", setCurtainPosition);
+app.post("/rooms/:room/curtains/:curtainName/position", setCurtainPosition);
 
 // Start the server
 app.listen(PORT, () => {

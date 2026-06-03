@@ -21,24 +21,30 @@
   </script>
 
 <body>
-  <div class="device" id="device">
+  <div class="device" id="device" style="display: flex; flex-direction: column;">
+    <div class="screen+side-nav" style="display: flex; flex-direction: row;">
+      <!-- schermata corrente -->
+      <div id="screen"></div>
 
-    <!-- schermata corrente -->
-    <div id="screen"></div>
-
-    <!-- sidenav — sempre visibile tranne in eco/settings -->
-    <aside class="side-nav" id="side-nav">
-      <div class="nav-pill">
-        <button class="nav-item" data-action="set-tab" data-value="lights" id="nav-lights"></button>
-        <button class="nav-item" data-action="set-tab" data-value="climate" id="nav-climate"></button>
-        <button class="nav-item" data-action="set-tab" data-value="blinds" id="nav-blinds"></button>
-      </div>
-      <button class="nav-circle" data-action="set-tab" data-value="eco" id="nav-eco"></button>
-      <button class="nav-circle" data-action="set-tab" data-value="settings" id="nav-settings"></button>
-    </aside>
+      <!-- sidenav — sempre visibile tranne in eco/settings -->
+      <aside class="side-nav" id="side-nav" style="display: flex; flex-direction: column; gap: 10px;">
+        <div class="nav-pill" style="display: flex; flex-direction: column; gap: 10px;">
+          <button class="nav-item" data-action="set-tab" data-value="lights" id="nav-lights">Lights</button>
+          <button class="nav-item" data-action="set-tab" data-value="climate" id="nav-climate">Climate</button>
+          <button class="nav-item" data-action="set-tab" data-value="blinds" id="nav-blinds">Blinds</button>
+        </div>
+        <button class="nav-circle" data-action="set-tab" data-value="eco" id="nav-eco"></button>
+        <button class="nav-circle" data-action="set-tab" data-value="settings" id="nav-settings"></button>
+      </aside>
+    </div>
 
     <!-- roombar — sempre visibile tranne in eco/settings -->
-    <nav class="room-bar" id="room-bar"></nav>
+    <nav class="room-bar" id="room-bar">
+      <button class="nav-item" data-action="set-room" data-value="bedroom" id="nav-bedroom">Bedroom</button>
+      <button class="nav-item" data-action="set-room" data-value="bathroom" id="nav-bathroom">Bathroom</button>
+      <button class="nav-item" data-action="set-room" data-value="living_room" id="nav-living_room">Living
+        Room</button>
+    </nav>
 
   </div>
   <script type="module" src="js/app.js"></script>

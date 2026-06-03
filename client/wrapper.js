@@ -118,3 +118,16 @@ async function setCurtainPosition(roomName, curtainName, value) {
 async function setBlindPosition(roomName, blindName, value) {
   return setCurtainPosition(roomName, blindName, value)
 }
+
+export {
+  getRooms,
+  getRoom,
+  toggleLight,
+  setBrightness,
+  setTargetTemp,
+  toggleHVAC,
+  toggleFan,
+  setFanSpeed,
+  setCurtainPosition,
+  setBlindPosition
+}

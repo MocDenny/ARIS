@@ -88,10 +88,10 @@ const toggleLight = (req, res) => {
                     .status(200)
                     .json(
                         "State of the light \'" +
-                            light.name +
-                            "\' toggled to \'" +
-                            light.state +
-                            "\' successfully",
+                        light.name +
+                        "\' toggled to \'" +
+                        light.state +
+                        "\' successfully",
                     );
             } else {
                 return res.status(500).json({ error: "Error writing data" });
@@ -122,10 +122,10 @@ const setLightBrightness = (req, res) => {
                     .status(200)
                     .json(
                         "Brightness of the light \'" +
-                            light.name +
-                            "\' updated to \'" +
-                            light.brightness +
-                            "\' successfully",
+                        light.name +
+                        "\' updated to \'" +
+                        light.brightness +
+                        "\' successfully",
                     );
             } else {
                 return res.status(500).json({ error: "Error writing data" });
@@ -176,8 +176,8 @@ const setTemperature = (req, res) => {
             .status(200)
             .json(
                 "Target temperature of the HVAC updated to \'" +
-                    room.hvac.target_temp +
-                    "\' successfully",
+                room.hvac.target_temp +
+                "\' successfully",
             );
     } else {
         return res.status(500).json({ error: "Error writing data" });
@@ -252,10 +252,10 @@ const setCurtainPosition = (req, res) => {
                     .status(200)
                     .json(
                         "State of the curtain '" +
-                            curtain.name +
-                            "' toggled to \'" +
-                            curtain.state +
-                            "\' successfully",
+                        curtain.name +
+                        "' toggled to \'" +
+                        curtain.state +
+                        "\' successfully",
                     );
             } else {
                 return res.status(500).json({ error: "Error writing data" });
