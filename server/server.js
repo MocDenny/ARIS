@@ -42,7 +42,7 @@ app.get("/rooms/:room", getRoom);
 // Toggle light state
 app.post("/rooms/:room/lights/:lightName/toggle", toggleLight);
 // Set light brightness
-app.post("/rooms/:room/lights/:index/brightness", setLightBrightness);
+app.post("/rooms/:room/lights/:lightName/brightness", setLightBrightness);
 // Toggle HVAC state
 app.post("/rooms/:room/hvac/toggle", toggleHVAC);
 // Set target temperature

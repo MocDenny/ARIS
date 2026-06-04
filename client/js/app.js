@@ -12,6 +12,9 @@
  */
 
 import * as api from '../wrapper.js'
+import { renderLights } from './screens/light.js'
+import { renderTemp } from './screens/hvac.js'
+import { renderBlinds } from './screens/curtains.js'
 
 //-----------------------------------------------------------
 //gestione dello stato 
@@ -84,13 +87,13 @@ function createRoomBar() {
 function render() {
   switch (state.tab) {
     case 'lights':
-      renderLights()
+      renderLights(state)
       break
     case 'climate':
-      renderTemp()
+      renderTemp(state)
       break
     case 'blinds':
-      renderBlinds()
+      renderBlinds(state)
       break
   }
 
@@ -99,98 +102,6 @@ function render() {
 
 
 
-
-
-//-----------------------------------------------------------
-//funzione per il rendering delle luci
-function renderLights() {
-  const lights = state.rooms[state.room].lights
-  const lightsHtml = lights.map((light, idx) => `
-    <div class="card${idx + 1}" style="padding: 10px;">
-      <div> ${light.name} </div>
-      <button id="light-${idx}" data-name="${light.name}"> ${light.state === "on" ? "off" : "on"} </button>
-    </div>
-  `).join('')
-  console.log(lightsHtml)
-
-  document.getElementById('screen').innerHTML = `
-  <h1> Luci </h1>
-  <div class="cards" style="display: flex; flex-direction: column;">
-    ${lightsHtml}
-  </div>
-  `
-  //quando viene cliccato un bottone, viene chiamata la funzione toggleLight, che toggle lo stato della luce e poi richiama renderLights per aggiornare l'interfaccia
-  document.querySelectorAll('[data-name]').forEach(btn => {
-    btn.addEventListener('click', async () => {
-      await api.toggleLight(state.room, btn.dataset.name)
-      state.rooms = await api.getRooms()
-      renderLights()
-    })
-  })
-}
-
-
-
-
-
-
-//-----------------------------------------------------------
-//funzione per il rendering della temperatura
-function renderTemp() {
-  const hvac = state.rooms[state.room].hvac
-  document.getElementById('screen').innerHTML = `
-  <h1> HVAC </h1>
-  <div class="cards" style="display: flex; flex-direction: column;">
-    <div class="card1" style="padding: 10px;">
-      <div> HVAC </div>
-      <button id=hvac-0> ${hvac.state === "on" ? "off" : "on"} </button>
-    </div>
-  </div>
-  `
-
-  //quando viene cliccato il bottone, viene chiamata la funzione toggleHVAC, che toggle lo stato dell'hvac e poi richiama renderTemp per aggiornare l'interfaccia
-  document.querySelector("#hvac-0").addEventListener("click", async () => {
-    await api.toggleHVAC(state.room)
-    state.rooms = await api.getRooms()
-    renderTemp()
-  })
-}
-
-
-
-
-
-
-//-----------------------------------------------------------
-//funzione per il rendering delle tende
-function renderBlinds() {
-  const curtains = state.rooms[state.room].curtains
-  const curtainsHtml = curtains.map((curtain, idx) => `
-    <div class="card1" style="padding: 10px;">
-      <div> ${curtain.name || 'Blinds'} </div>
-      <button id="curtain-${idx}"> ${curtain.state === "open" ? "closed" : "open"} </button>
-    </div>
-  `).join('')
-
-  document.getElementById('screen').innerHTML = `
-  <h1> Blinds </h1>
-
-  <div class="cards" style="display: flex; flex-direction: column;">
-    ${curtainsHtml}
-  </div>
-  `
-  //quando viene cliccato un bottone, viene chiamata la funzione setCurtainPosition, che setta la posizione della tenda e poi richiama renderBlinds per aggiornare l'interfaccia
-  curtains.forEach((curtain, idx) => {
-    const btn = document.getElementById(`curtain-${idx}`)
-    if (btn) {
-      btn.addEventListener("click", async () => {
-        await api.setCurtainPosition(state.room, curtain.name, curtain.state === "open" ? "closed" : "open")
-        state.rooms = await api.getRooms()
-        renderBlinds()
-      })
-    }
-  })
-}
 
 
 

@@ -7,7 +7,7 @@
         "lights": [
           {
             "name": "ceiling_light_1",
-            "state": "off",
+            "state": "on",
             "brightness": 0
           },
           {
@@ -66,12 +66,12 @@
         "lights": [
           {
             "name": "ceiling_light_1",
-            "state": "on",
+            "state": "off",
             "brightness": 0
           },
           {
             "name": "ceiling_light_2",
-            "state": "off",
+            "state": "on",
             "brightness": 0
           }
         ],
