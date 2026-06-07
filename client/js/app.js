@@ -14,6 +14,7 @@ import * as api from "../wrapper.js";
 import { renderLights } from "./screens/light.js";
 import { renderClimate } from "./screens/climate.js";
 import { renderBlinds } from "./screens/curtains.js";
+import { renderSettings } from "./screens/settings.js";
 
 /**
  * State variable to keep track of the current tab, selected room, and the current state of the suite.
@@ -58,6 +59,14 @@ async function createSecNavBar() {
     });
     document.getElementById("nav-blinds").addEventListener("click", async () => {
         state.tab = "blinds";
+        const res = await api.updateData(state.suiteConfig);
+        if (res.error) {
+            console.error(res.error);
+        }
+        render();
+    });
+    document.getElementById("nav-settings").addEventListener("click", async () => {
+        state.tab = "settings";
         const res = await api.updateData(state.suiteConfig);
         if (res.error) {
             console.error(res.error);
@@ -109,6 +118,9 @@ function render() {
             break;
         case "blinds":
             renderBlinds(state);
+            break;
+        case "settings":
+            renderSettings(state);
             break;
     }
 }
