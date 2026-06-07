@@ -1,19 +1,21 @@
-import * as api from '../../wrapper.js'
+import * as api from '../../wrapper.js';
 
 export async function renderLights(state) {
   // 1. carica il template HTML
-  const res = await fetch('html/lights.html')
-  const html = await res.text()
-  document.getElementById('screen').innerHTML = html
+  const res = await fetch('html/lights.html');
+  const html = await res.text();
+  document.getElementById('screen').innerHTML = html;
 
   // 2. popola i dati
-  const lights = state.rooms[state.room].lights
-  document.getElementById('screen-room-label').textContent = state.rooms[state.room].name
+  const room = state.suiteConfig.room_config.rooms[state.room];
+  const lights = room.lights;
+  document.getElementById('screen-room-label').textContent = room.name;
 
   // 3. genera le card
-  document.getElementById('lights-list').innerHTML = lights.map((light, idx) => {
-    const on = light.state === 'on'
-    return `
+  document.getElementById('lights-list').innerHTML = lights
+    .map((light, idx) => {
+      const on = light.state === 'on';
+      return `
       <div class="card ${on ? '' : 'off'}">
         <div class="card-header">
         <div style="display: flex; gap:20px; align-items: center;">
@@ -37,23 +39,27 @@ export async function renderLights(state) {
             <div class="slider-fill ${on ? '' : 'off'}" data-slider-fill="${idx}" style="width:${light.brightness}%"></div>
           </div>
         </div>
-      </div>`
-  }).join('')
+      </div>`;
+    })
+    .join('');
 
   // 4. attacca gli eventi
-  initEvents(state)
+  initEvents(state);
 }
 
 function initEvents(state) {
   // toggle
-  document.querySelectorAll('.toggle').forEach(btn => {
+  document.querySelectorAll('.toggle').forEach((btn) => {
     btn.addEventListener('click', async () => {
-      const light = state.rooms[state.room].lights[btn.dataset.index]
-      await api.toggleLight(state.room, light.name)
-      state.rooms = await api.getRooms()
-      renderLights(state)
-    })
-  })
+      const light =
+        state.suiteConfig.room_config.rooms[state.room].lights[
+          btn.dataset.index
+        ];
+      // Toggle just the client app
+      // state.rooms = await api.getRooms()
+      // renderLights(state)
+    });
+  });
 
   //TODO toggle
 }

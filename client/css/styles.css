@@ -1,431 +1,455 @@
-/* body {
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #c3c3c3;
-}
-
-.container {
-    display: grid;
-    grid-template-areas:
-        "content vertical-nav"
-        "footer footer";
-    gap: 3px;
-    background-color: #c3c3c3;
-}
-
-.vertical-nav {
-    grid-area: vertical-nav;
-    background-color: white;
-    width: 80px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.vertical-nav div {
-    grid-area: vertical-nav;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-}
-
-.footer {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-    grid-area: footer;
-    text-align: center;
-    background-color: white;
-    height: 80px;
-}
-
-.content {
-    grid-area: content;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-    width: 397px;
-    height: 717px;
-}
-
- */
-
-
 /* ── Reset ─────────────────────────────────────────────────── */
 *,
 *::before,
 *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* ── Font ──────────────────────────────────────────────────── */
 @import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 @font-face {
-    font-family: manropeExtraLight;
-    /* set name */
-    src: url(./font/Manrope-ExtraLight.ttf);
-    /* url of the font */
+  font-family: manropeExtraLight;
+  /* set name */
+  src: url(./font/Manrope-ExtraLight.ttf);
+  /* url of the font */
 }
 
 @font-face {
-    font-family: manropeLight;
-    /* set name */
-    src: url(./font/Manrope-ExtraLight.ttf);
-    /* url of the font */
+  font-family: manropeLight;
+  /* set name */
+  src: url(./font/Manrope-ExtraLight.ttf);
+  /* url of the font */
 }
 
 @font-face {
-    font-family: manropeMedium;
-    /* set name */
-    src: url(./font/Manrope-Medium.ttf);
-    /* url of the font */
+  font-family: manropeMedium;
+  /* set name */
+  src: url(./font/Manrope-Medium.ttf);
+  /* url of the font */
 }
 
 @font-face {
-    font-family: manropeRegular;
-    /* set name */
-    src: url(./font/Manrope-Regular.ttf);
-    /* url of the font */
+  font-family: manropeRegular;
+  /* set name */
+  src: url(./font/Manrope-Regular.ttf);
+  /* url of the font */
 }
 
 body {
-    width: 480px;
-    height: 800px;
-    overflow: hidden;
-    font-family: myFont;
-    background: #fff;
-    color: #000;
+  width: 480px;
+  height: 800px;
+  overflow: hidden;
+  font-family: myFont;
+  background: #fff;
+  color: #000;
 }
 
 /* ── Device ────────────────────────────────────────────────── */
 .device {
-    width: 480px;
-    height: 800px;
-    position: relative;
-    overflow: hidden;
-    background: #fff;
+  width: 480px;
+  height: 800px;
+  position: relative;
+  overflow: hidden;
+  background: #fff;
 }
 
 /* ── Screen ────────────────────────────────────────────────── */
 #screen {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 80px;
-    /* spazio per la sidenav */
-    bottom: 80px;
-    /* spazio per la roombar */
-    overflow-y: auto;
-    overflow-x: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 80px;
+  /* spazio per la sidenav */
+  bottom: 80px;
+  /* spazio per la roombar */
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #screen::-webkit-scrollbar {
-    width: 0;
+  width: 0;
 }
 
 /* ── Screen header ─────────────────────────────────────────── */
 
 .screen-header {
-    font-family: manropeMedium;
-    padding: 24px 22px 0;
-    margin-bottom: 18px;
+  font-family: manropeMedium;
+  padding: 24px 22px 0;
+  margin-bottom: 18px;
 }
 
 .room-label {
-    font-family: manropeLight;
-    font-size: 25px;
-    color: #000;
-    margin-bottom: 2px;
+  font-family: manropeLight;
+  font-size: 25px;
+  color: #000;
+  margin-bottom: 2px;
 }
 
 .screen-title {
-    font-family: manropeMedium;
-    font-size: 40px;
-    line-height: 1.1;
+  font-family: manropeMedium;
+  font-size: 40px;
+  line-height: 1.1;
 }
 
 /* ── Screen body ───────────────────────────────────────────── */
 .screen-body {
-    padding: 0 22px 20px;
+  padding: 0 22px 20px;
 }
-
 
 /* ── Card ──────────────────────────────────────────────────── */
 .card {
-    background: #fff;
-    border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
-    border-radius: 14px;
-    padding: 14px;
-    margin-bottom: 12px;
-    transition: background 0.3s;
+  background: #fff;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  border-radius: 14px;
+  padding: 14px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
 }
 
 .card.off {
-    background: #f0f0f0;
+  background: #f0f0f0;
 }
 
 /* ── Card header ───────────────────────────────────────────── */
 .card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
 }
 
 .card-name {
-    font-family: manropeLight;
-    font-size: 22px;
-    margin-left: 1px;
+  font-family: manropeLight;
+  font-size: 22px;
+  margin-left: 1px;
 }
 
 /* ── Toggle ────────────────────────────────────────────────── */
 .toggle {
-    width: 52px;
-    height: 32px;
-    border-radius: 16px;
-    border: none;
-    cursor: pointer;
-    position: relative;
-    transition: background-color 0.25s ease;
-    flex-shrink: 0;
-    padding: 0;
-    display: inline-flex;
-    align-items: center;
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.25s ease;
+  flex-shrink: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
 }
 
 .toggle.on {
-    background: rgb(50, 47, 53);
+  background: rgb(50, 47, 53);
 }
 
 .toggle.off {
-    background: #D8D8D6;
+  background: #d8d8d6;
 }
 
 .toggle-knob {
-    position: absolute;
-    top: 4px;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
+  position: absolute;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
 }
 
 .toggle.on .toggle-knob {
-    left: 24px;
+  left: 24px;
 }
 
 .toggle.off .toggle-knob {
-    left: 4px;
+  left: 4px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+/* ── Temperature Setter ────────────────────────────────────────────────── */
+.value-setter-row {
+  display: flex;
+  flex-direction: row;
+  font-family: manropeLight;
+  justify-content: space-around;
+  align-items: center;
+}
+.square-button {
+  background: #fff;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  border-radius: 14px;
+  padding: 11px 20px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
+  width: 60px;
+  font-size: 30px;
+}
+.square-button.off {
+  border-color: #d8d8d6;
+  color: #d8d8d6;
+}
+.value-displayer {
+  display: flex;
+  align-items: flex-end;
+  padding-left: 10px;
+}
+.main-value {
+  font-weight: bolder;
+}
+.value-setter-row .main-value {
+  font-size: 80px;
+}
+.value-setter-row .unit {
+  font-size: 20px;
+  height: 90px;
+}
+.description-wrapper {
+  font-size: 18px;
+  font-family: manropeLight;
+  display: flex;
+  align-items: center;
+  color: grey;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+.description-wrapper .main-value {
+  font-size: 25px;
+  color: black;
+}
+.description-wrapper .unit {
+  font-size: 15px;
+  height: 35px;
+  color: black;
+}
 
 /* ── Slider ────────────────────────────────────────────────── */
 .slider-label-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 6px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
 }
 
 .slider-label {
-    font-family: manropeLight;
-    font-size: 18px;
+  font-family: manropeLight;
+  font-size: 18px;
 }
 
 .slider-value {
-    font-family: manropeRegular;
-    font-size: 25px;
+  font-family: manropeRegular;
+  font-size: 25px;
 }
 
-.slider-label.off {
-    color: #999;
+.slider-label-row.off {
+  color: #999;
 }
 
-.slider-value.off {
-    color: #999;
+.slider-bar {
+  -webkit-appearance: none;
+  width: 100%;
+  --range: calc(var(--max) - var(--min));
+  --ratio: calc((var(--value) - var(--min)) / var(--range));
+  --sx: calc(var(--ratio) * 100%);
 }
+
+/* Webkit compatibility (Chrome) */
+.slider-bar::-webkit-slider-runnable-track {
+  height: 3px;
+  border-radius: 10px;
+  border: 0.5px solid #000;
+  background:
+    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+}
+.slider-bar[disabled]::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+
+  border-color: #d8d8d6;
+}
+/* Suppress the handle */
+.slider-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  visibility: hidden;
+}
+/* Mozilla compatibility */
+.slider-bar::-moz-range-track {
+  height: 3px;
+  border-radius: 10px;
+  border: 0.5px solid #000;
+  background:
+    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
+    #fff;
+}
+.slider-bar[disabled]::-moz-range-track {
+  background:
+    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+  border-color: #d8d8d6;
+}
+.slider-bar::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  visibility: hidden;
+}
+
+/*-----------------*/
 
 .slider-wrap {
-    height: 18px;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    touch-action: none;
-    user-select: none;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
 }
 
 .slider-track {
-    position: relative;
-    width: 100%;
-    height: 3px;
-    background: #fff;
-    border-radius: 10px;
-    border: 0.5px solid #000;
+  position: relative;
+  width: 100%;
+  height: 3px;
+  background: #fff;
+  border-radius: 10px;
+  border: 0.5px solid #000;
 }
 
 .slider-track.off {
-    border-color: #D8D8D6;
+  border-color: #d8d8d6;
 }
 
 .slider-fill {
-    height: 100%;
-    background: #000;
-    border-radius: 10px;
+  height: 100%;
+  background: #000;
+  border-radius: 10px;
 }
 
 .slider-fill.off {
-    background: #D8D8D6;
+  background: #d8d8d6;
 }
 
 /* ── SideNav ───────────────────────────────────────────────── */
 .side-nav {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 80px;
-    height: calc(100% - 80px);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border-left: 0.5px solid #CAC4D0;
-    background: #fff;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-left: 0.5px solid #cac4d0;
+  background: #fff;
 }
 
 .nav-item {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
 }
 
 .nav-item.active {
-    background: rgb(50, 47, 53);
+  background: rgb(50, 47, 53);
 }
 
 /* ── RoomBar ───────────────────────────────────────────────── */
 .room-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    border-top: 0.5px solid #CAC4D0;
-    background: #fff;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  border-top: 0.5px solid #cac4d0;
+  background: #fff;
 }
 
 .room-item {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    border: none;
-    background: transparent;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
 }
 
 .room-item.active {
-    background: rgb(50, 47, 53);
+  background: rgb(50, 47, 53);
 }
 
 /* ── Animazioni ────────────────────────────────────────────── */
 @keyframes fade-up {
-    from {
-        opacity: 0;
-        transform: translateY(8px);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes bloom {
-    0% {
-        transform: scale(0.7);
-        opacity: 0;
-    }
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
 
-    60% {
-        transform: scale(1.05);
-        opacity: 1;
-    }
+  60% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
 
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes glow {
+  0%,
+  100% {
+    opacity: 0.85;
+  }
 
-    0%,
-    100% {
-        opacity: 0.85;
-    }
-
-    50% {
-        opacity: 1;
-    }
+  50% {
+    opacity: 1;
+  }
 }
 
 @keyframes fan-spin {
-    from {
-        transform: rotate(0deg);
-    }
+  from {
+    transform: rotate(0deg);
+  }
 
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .fade-up {
-    animation: fade-up 0.3s ease;
+  animation: fade-up 0.3s ease;
 }

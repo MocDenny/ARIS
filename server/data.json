@@ -7,7 +7,7 @@
         "lights": [
           {
             "name": "ceiling_light_1",
-            "state": "on",
+            "state": "off",
             "brightness": 0
           },
           {
@@ -18,11 +18,11 @@
         ],
         "hvac": {
           "state": "on",
-          "target_temp": 20,
+          "target_temp": "24",
           "current_temp": 19,
           "fan": {
-            "state": "on",
-            "speed": 10
+            "state": "off",
+            "speed": "88"
           }
         },
         "curtains": [
@@ -76,7 +76,7 @@
           }
         ],
         "hvac": {
-          "state": "on",
+          "state": "off",
           "target_temp": 20,
           "current_temp": 19,
           "fan": {
