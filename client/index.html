@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ARIS</title>
+  <link rel="stylesheet" href="css/styles.css?v=1.1">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" />
+
+  <!-- Import Map per risolvere i moduli bare di Material Design 3 -->
+  <script type="importmap">
+        {
+            "imports": {
+                "@material/web/": "https://esm.run/@material/web/"
+            }
+        }
+    </script>
+  <script type="module">
+    import '@material/web/all.js';
+  </script>
+
+<body>
+  <!-- schermata corrente -->
+  <div id="screen"></div>
+
+  <!-- sidenav — sempre visibile tranne in eco/settings -->
+  <aside class="side-nav" id="side-nav" style="display: flex; flex-direction: column; gap: 10px;">
+    <div class="nav-pill" style="display: flex; flex-direction: column; gap: 10px;">
+      <button class="nav-item" id="nav-lights">Lights</button>
+      <button class="nav-item" id="nav-climate">Climate</button>
+      <button class="nav-item" id="nav-blinds">Blinds</button>
+    </div>
+    <button class="nav-circle" id="nav-eco"></button>
+    <button class="nav-circle" id="nav-settings"></button>
+  </aside>
+
+  <!-- roombar — sempre visibile tranne in eco/settings -->
+  <nav class="room-bar" id="room-bar">
+    <button class="nav-item" data-action="set-room" data-value="bedroom" id="nav-bedroom">Bedroom</button>
+    <button class="nav-item" data-action="set-room" data-value="bathroom" id="nav-bathroom">Bathroom</button>
+    <button class="nav-item" data-action="set-room" data-value="living_room" id="nav-living_room">Living
+      Room</button>
+  </nav>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+
+</html>
