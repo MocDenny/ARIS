@@ -1,24 +1,13 @@
 {
   "name": "aris",
   "version": "1.0.0",
-  "description": "demo of aris interface",
-  "homepage": "https://github.com/MocDenny/ARIS#readme",
-  "bugs": {
-    "url": "https://github.com/MocDenny/ARIS/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MocDenny/ARIS.git"
-  },
-  "license": "ISC",
-  "author": "",
-  "type": "commonjs",
-  "main": "main.js",
+  "description": "Adaptive Room Intelligence System",
+  "main": "server/server.js",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server/server.js"
   },
-  "devDependencies": {
-    "electron": "^42.2.0"
+  "dependencies": {
+    "express": "^4.18.0",
+    "nodemon": "^3.1.14"
   }
 }

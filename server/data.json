@@ -1,0 +1,104 @@
+{
+  "room_config": {
+    "room_number": "405",
+    "rooms": {
+      "bedroom": {
+        "name": "Bedroom",
+        "lights": [
+          {
+            "name": "Ceiling light 1",
+            "state": "on",
+            "brightness": "49"
+          },
+          {
+            "name": "Bedside lamp 1",
+            "state": "on",
+            "brightness": 60
+          }
+        ],
+        "hvac": {
+          "state": "on",
+          "target_temp": "21",
+          "current_temp": 19,
+          "fan": {
+            "state": "on",
+            "speed": "24"
+          }
+        },
+        "curtains": [
+          {
+            "name": "Window blind 1",
+            "state": "open"
+          },
+          {
+            "name": "Window blind 2",
+            "state": "closed"
+          }
+        ]
+      },
+      "bathroom": {
+        "name": "Bathroom",
+        "lights": [
+          {
+            "name": "Ceiling light 1",
+            "state": "on",
+            "brightness": 0
+          }
+        ],
+        "hvac": {
+          "state": "on",
+          "target_temp": 20,
+          "current_temp": 19,
+          "fan": {
+            "state": "on",
+            "speed": 10
+          }
+        },
+        "curtains": [
+          {
+            "name": "Window blind 1",
+            "state": "open"
+          }
+        ]
+      },
+      "living_room": {
+        "name": "Living Room",
+        "lights": [
+          {
+            "name": "Ceiling light 1",
+            "state": "on",
+            "brightness": 0
+          },
+          {
+            "name": "Ceiling light 2",
+            "state": "off",
+            "brightness": 0
+          }
+        ],
+        "hvac": {
+          "state": "off",
+          "target_temp": 20,
+          "current_temp": 19,
+          "fan": {
+            "state": "on",
+            "speed": 10
+          }
+        },
+        "curtains": [
+          {
+            "name": "Window blind 1",
+            "state": "open"
+          },
+          {
+            "name": "Window blind 2",
+            "state": "closed"
+          }
+        ]
+      }
+    },
+    "eco_mode": "off",
+    "settings": {
+      "learning_mode": "off"
+    }
+  }
+}
