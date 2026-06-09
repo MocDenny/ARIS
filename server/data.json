@@ -18,11 +18,11 @@
         ],
         "hvac": {
           "state": "on",
-          "target_temp": "21",
+          "target_temp": "25",
           "current_temp": 19,
           "fan": {
-            "state": "on",
-            "speed": "24"
+            "state": "off",
+            "speed": "51"
           }
         },
         "curtains": [
@@ -32,7 +32,7 @@
           },
           {
             "name": "Window blind 2",
-            "state": "closed"
+            "state": "open"
           }
         ]
       },
@@ -96,7 +96,7 @@
         ]
       }
     },
-    "eco_mode": "off",
+    "eco_mode": "on",
     "settings": {
       "learning_mode": "off"
     }

@@ -1,0 +1,186 @@
+/* Css file containing the styling of interactble elements such as: toggles, sliders, etc. */
+
+/* ── Toggle ────────────────────────────────────────────────── */
+.toggle {
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.25s ease;
+  flex-shrink: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.toggle.on {
+  background: rgb(50, 47, 53);
+}
+
+.toggle.off {
+  background: #d8d8d6;
+}
+
+.toggle-knob {
+  position: absolute;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.toggle.on .toggle-knob {
+  left: 24px;
+}
+
+.toggle.off .toggle-knob {
+  left: 4px;
+}
+
+/* ── Temperature Setter ────────────────────────────────────────────────── */
+
+.value-setter-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.square-button {
+  background: #fff;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  border-radius: 14px;
+  padding: 11px 20px;
+  margin-bottom: 12px;
+  transition: background 0.3s;
+  width: 60px;
+  font-size: 30px;
+}
+
+.square-button.off {
+  border-color: #d8d8d6;
+  color: #d8d8d6;
+}
+
+.value-displayer {
+  display: flex;
+  align-items: flex-end;
+  padding-left: 10px;
+}
+
+.main-value {
+  font-family: manropeMedium;
+}
+
+.value-setter-row .main-value {
+  font-size: 80px;
+  width: 100px;
+  text-align: center;
+}
+
+.value-setter-row .unit {
+  font-size: 20px;
+  height: 90px;
+}
+
+.description-wrapper {
+  display: flex;
+  align-items: center;
+  color: grey;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.description-wrapper .main-value {
+  font-size: 25px;
+  color: black;
+}
+
+.description-wrapper .unit {
+  font-size: 15px;
+  height: 35px;
+  color: black;
+}
+
+/* ── Slider ────────────────────────────────────────────────── */
+
+.slider-label-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.slider-label {
+  font-size: 18px;
+}
+
+.slider-value {
+  font-family: manropeRegular;
+  font-size: 25px;
+}
+
+.slider-label-row.off {
+  color: #999;
+}
+
+.slider-bar {
+  -webkit-appearance: none;
+  width: 100%;
+  --range: calc(var(--max) - var(--min));
+  --ratio: calc((var(--value) - var(--min)) / var(--range));
+  --sx: calc(var(--ratio) * 100%);
+}
+
+/* Webkit compatibility (Chrome) */
+.slider-bar::-webkit-slider-runnable-track {
+  height: 5px;
+  border-radius: 10px;
+  border: 0.1px solid #000;
+  background:
+    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+}
+
+.slider-bar[disabled]::-webkit-slider-runnable-track {
+  background:
+    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+
+  border-color: #d8d8d6;
+}
+
+/* Suppress the handle */
+.slider-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  visibility: hidden;
+}
+
+/* Mozilla compatibility */
+.slider-bar::-moz-range-track {
+  height: 3px;
+  border-radius: 10px;
+  border: 0.5px solid #000;
+  background:
+    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
+    #fff;
+}
+
+.slider-bar[disabled]::-moz-range-track {
+  background:
+    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
+    #ffff;
+  border-color: #d8d8d6;
+}
+
+.slider-bar::-moz-range-thumb {
+  -webkit-appearance: none;
+  width: 0;
+  visibility: hidden;
+}

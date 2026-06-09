@@ -39,10 +39,9 @@
 }
 
 body {
-  width: 480px;
-  height: 800px;
   overflow: hidden;
-  font-family: myFont;
+  font-family: manropeLight;
+  font-size: 18px;
   background: #fff;
   color: #000;
 }
@@ -62,9 +61,9 @@ body {
   top: 0;
   left: 0;
   right: 80px;
-  /* spazio per la sidenav */
+  /* space for sidenav */
   bottom: 80px;
-  /* spazio per la roombar */
+  /* space for roombar */
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -76,15 +75,12 @@ body {
 /* ── Screen header ─────────────────────────────────────────── */
 
 .screen-header {
-  font-family: manropeMedium;
   padding: 24px 22px 0;
   margin-bottom: 18px;
 }
 
 .room-label {
-  font-family: manropeLight;
   font-size: 25px;
-  color: #000;
   margin-bottom: 2px;
 }
 
@@ -106,7 +102,7 @@ body {
   border-radius: 14px;
   padding: 14px;
   margin-bottom: 12px;
-  transition: background 0.3s;
+  transition: background 0.4s;
 }
 
 .card.off {
@@ -115,14 +111,13 @@ body {
 
 /* white card to dark for the blinds when closed */
 .card.closed {
-  background: #322F35;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  background: #322f35;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   border-radius: 14px;
   padding: 14px;
   margin-bottom: 12px;
   transition: background 0.3s;
 }
-
 /* ── Card header ───────────────────────────────────────────── */
 .card-header {
   display: flex;
@@ -132,232 +127,55 @@ body {
 }
 
 .card-name {
-  font-family: manropeLight;
+  font-family: manropeRegular;
   font-size: 22px;
   margin-left: 1px;
 }
 
 .card-name.closed {
-  color: #E0E0E0;
+  color: #e0e0e0;
 }
 
-/* ── Toggle ────────────────────────────────────────────────── */
-.toggle {
-  width: 52px;
-  height: 32px;
-  border-radius: 16px;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: background-color 0.25s ease;
-  flex-shrink: 0;
-  padding: 0;
-  display: inline-flex;
-  align-items: center;
+/* ── Eco mode  ───────────────────────────────────────────────── */
+#text {
+  padding-left: 76px;
+  padding-right: 52px;
 }
 
-.toggle.on {
-  background: rgb(50, 47, 53);
+.table {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
 }
 
-.toggle.off {
-  background: #d8d8d6;
-}
-
-.toggle-knob {
-  position: absolute;
-  top: 4px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-
-.toggle.on .toggle-knob {
-  left: 24px;
-}
-
-.toggle.off .toggle-knob {
-  left: 4px;
-}
-
-/* ── Temperature Setter ────────────────────────────────────────────────── */
-.value-setter-row {
+.table div {
+  border-bottom: 0.5px solid #cac4d0;
   display: flex;
   flex-direction: row;
-  font-family: manropeLight;
-  justify-content: space-around;
   align-items: center;
+  padding: 15px 0px;
+  gap: 20px;
 }
 
-.square-button {
-  background: #fff;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
-  border-radius: 14px;
-  padding: 11px 20px;
-  margin-bottom: 12px;
-  transition: background 0.3s;
-  width: 60px;
-  font-size: 30px;
+.table div:last-child {
+  border-bottom: 0px;
 }
 
-.square-button.off {
-  border-color: #d8d8d6;
-  color: #d8d8d6;
-}
-
-.value-displayer {
+.table div > div {
+  border-bottom: 0px;
   display: flex;
-  align-items: flex-end;
-  padding-left: 10px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
 }
 
-.main-value {
-  font-weight: bolder;
+#content-eco-off {
+  padding: 14px;
 }
 
-.value-setter-row .main-value {
-  font-size: 80px;
-}
-
-.value-setter-row .unit {
-  font-size: 20px;
-  height: 90px;
-}
-
-.description-wrapper {
-  font-size: 18px;
-  font-family: manropeLight;
-  display: flex;
-  align-items: center;
-  color: grey;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.description-wrapper .main-value {
-  font-size: 25px;
-  color: black;
-}
-
-.description-wrapper .unit {
-  font-size: 15px;
-  height: 35px;
-  color: black;
-}
-
-/* ── Slider ────────────────────────────────────────────────── */
-.slider-label-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.slider-label {
-  font-family: manropeLight;
-  font-size: 18px;
-}
-
-.slider-value {
-  font-family: manropeRegular;
-  font-size: 25px;
-}
-
-.slider-label-row.off {
-  color: #999;
-}
-
-.slider-bar {
-  -webkit-appearance: none;
-  width: 100%;
-  --range: calc(var(--max) - var(--min));
-  --ratio: calc((var(--value) - var(--min)) / var(--range));
-  --sx: calc(var(--ratio) * 100%);
-}
-
-/* Webkit compatibility (Chrome) */
-.slider-bar::-webkit-slider-runnable-track {
-  height: 5px;
-  border-radius: 10px;
-  border: 0.1px solid #000;
-  background:
-    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
-    #ffff;
-}
-
-.slider-bar[disabled]::-webkit-slider-runnable-track {
-  background:
-    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
-    #ffff;
-
-  border-color: #d8d8d6;
-}
-
-/* Suppress the handle */
-.slider-bar::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 0;
-  visibility: hidden;
-}
-
-/* Mozilla compatibility */
-.slider-bar::-moz-range-track {
-  height: 3px;
-  border-radius: 10px;
-  border: 0.5px solid #000;
-  background:
-    linear-gradient(#000, #000) 0 / var(--sx) 100% no-repeat,
-    #fff;
-}
-
-.slider-bar[disabled]::-moz-range-track {
-  background:
-    linear-gradient(#d8d8d6, #d8d8d6) 0 / var(--sx) 100% no-repeat,
-    #ffff;
-  border-color: #d8d8d6;
-}
-
-.slider-bar::-moz-range-thumb {
-  -webkit-appearance: none;
-  width: 0;
-  visibility: hidden;
-}
-
-/*-----------------*/
-
-.slider-wrap {
-  height: 18px;
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  touch-action: none;
-  user-select: none;
-}
-
-.slider-track {
-  position: relative;
-  width: 100%;
-  height: 3px;
-  background: #fff;
-  border-radius: 10px;
-  border: 0.5px solid #000;
-}
-
-.slider-track.off {
-  border-color: #d8d8d6;
-}
-
-.slider-fill {
-  height: 100%;
+.special-card.on{
   background: #000;
-  border-radius: 10px;
-}
-
-.slider-fill.off {
-  background: #d8d8d6;
+  color: #fff;  
 }
 
 /* ── SideNav ───────────────────────────────────────────────── */
@@ -427,64 +245,6 @@ body {
   background: rgb(50, 47, 53);
 }
 
-/* ── Animazioni ────────────────────────────────────────────── */
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes bloom {
-  0% {
-    transform: scale(0.7);
-    opacity: 0;
-  }
-
-  60% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes glow {
-
-  0%,
-  100% {
-    opacity: 0.85;
-  }
-
-  50% {
-    opacity: 1;
-  }
-}
-
-@keyframes fan-spin {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.fade-up {
-  animation: fade-up 0.3s ease;
-}
-
-
-
 /* ── Curtains ────────────────────────────────────────────── */
 
 .button-curtains-open,
@@ -497,37 +257,21 @@ body {
   align-items: center;
   aspect-ratio: 1/1;
   border-radius: 100px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   cursor: pointer;
   transition: transform 0.15s ease;
 }
 
-@keyframes curtain-press {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(0.82); }
-  100% { transform: scale(1); }
-}
-
-.button-curtains-open.pressing,
-.button-curtains-close.pressing {
-  animation: curtain-press 0.16s ease forwards;
-}
-
-
 .state-indicator {
-  font-family: manropeLight;
   color: #585858;
-  font-size: 18px;
   margin-left: 3px;
 }
 
 .state-indicator.closed {
-  color: #E0E0E0;
-  font-family: manropeLight;
+  color: #e0e0e0;
 }
 
-
-/*---guest profile---*/
+/* ── Guest Profile ────────────────────────────────────────────── */
 .card-header-settings {
   display: flex;
   gap: 20px;
@@ -544,8 +288,7 @@ body {
 .guest-name,
 .guest-room,
 .guest-days {
-  color: #5C5C5C;
-  font-family: manropeLight;
+  color: #5c5c5c;
   font-size: 16px;
   margin-left: 3px;
 }
@@ -555,7 +298,7 @@ body {
   margin-bottom: 5px;
   width: 150px;
   height: 0.3px;
-  background: #CAC4D0;
+  background: #cac4d0;
 }
 
 .icon-preference-container {
@@ -565,5 +308,5 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
 }

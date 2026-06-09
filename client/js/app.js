@@ -10,27 +10,28 @@
  *    reloads the updated data, and refreshes the interface.
  */
 
-import * as api from "../wrapper.js";
-import { renderLights } from "./screens/light.js";
-import { renderClimate } from "./screens/climate.js";
-import { renderBlinds } from "./screens/curtains.js";
-import { renderSettings } from "./screens/settings.js";
+import * as api from '../wrapper.js';
+import { renderLights } from './screens/light.js';
+import { renderClimate } from './screens/climate.js';
+import { renderBlinds } from './screens/curtains.js';
+import { renderSettings } from './screens/settings.js';
+import { renderEco } from './screens/eco.js';
 
 /**
  * State variable to keep track of the current tab, selected room, and the current state of the suite.
  * */
 const state = {
-    tab: "lights",
-    room: "bedroom",
-    suiteConfig: {},
+  tab: 'lights',
+  room: 'bedroom',
+  suiteConfig: {},
 };
 
 //-----------------------------------------------------------
 async function init() {
-    state.suiteConfig = await api.getAllInfo();
-    await createSecNavBar();
-    await createRoomBar();
-    render();
+  state.suiteConfig = await api.getAllInfo();
+  await createSecNavBar();
+  await createRoomBar();
+  render();
 }
 
 //-----------------------------------------------------------
@@ -39,39 +40,49 @@ async function init() {
  * Creates the lateral navigation bar for sections (Lights, Climate, Blinds) and attaches event listeners to update the state and re-render the interface when a section is selected.
  */
 async function createSecNavBar() {
-    // Before changing tab update room configuration changes on JSON room configuration file
-    document.getElementById("nav-lights").addEventListener("click", async () => {
-        state.tab = "lights";
-        const res = api.updateData(state.suiteConfig);
-        if (res.error) {
-            // Error updating data
-            console.error(res.error);
-        }
-        render();
-    });
-    document.getElementById("nav-climate").addEventListener("click", async () => {
-        state.tab = "climate";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
-    });
-    document.getElementById("nav-blinds").addEventListener("click", async () => {
-        state.tab = "blinds";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
-    });
-    document.getElementById("nav-settings").addEventListener("click", async () => {
-        state.tab = "settings";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
+  // Before changing tab update room configuration changes on JSON room configuration file
+  document.getElementById('nav-lights').addEventListener('click', async () => {
+    state.tab = 'lights';
+    const res = api.updateData(state.suiteConfig);
+    if (res.error) {
+      // Error updating data
+      console.error(res.error);
+    }
+    render();
+  });
+  document.getElementById('nav-climate').addEventListener('click', async () => {
+    state.tab = 'climate';
+    const res = await api.updateData(state.suiteConfig);
+    if (res.error) {
+      console.error(res.error);
+    }
+    render();
+  });
+  document.getElementById('nav-blinds').addEventListener('click', async () => {
+    state.tab = 'blinds';
+    const res = await api.updateData(state.suiteConfig);
+    if (res.error) {
+      console.error(res.error);
+    }
+    render();
+  });
+  document.getElementById('nav-eco').addEventListener('click', async () => {
+    state.tab = 'eco';
+    const res = await api.updateData(state.suiteConfig);
+    if (res.error) {
+      console.error(res.error);
+    }
+    render();
+  });
+  document
+    .getElementById('nav-settings')
+    .addEventListener('click', async () => {
+      state.tab = 'settings';
+      const res = await api.updateData(state.suiteConfig);
+      if (res.error) {
+        console.error(res.error);
+      }
+      render();
     });
 }
 
@@ -79,29 +90,33 @@ async function createSecNavBar() {
  * Creates the navigation bar for the rooms (Bedroom, Bathroom, Living Room) and attaches event listeners to update the state and re-render the interface when a room is selected.
  */
 async function createRoomBar() {
-    document.getElementById("nav-bedroom").addEventListener("click", async () => {
-        state.room = "bedroom";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
+  document.getElementById('nav-bedroom').addEventListener('click', async () => {
+    state.room = 'bedroom';
+    const res = await api.updateData(state.suiteConfig);
+    if (res.error) {
+      console.error(res.error);
+    }
+    render();
+  });
+  document
+    .getElementById('nav-bathroom')
+    .addEventListener('click', async () => {
+      state.room = 'bathroom';
+      const res = await api.updateData(state.suiteConfig);
+      if (res.error) {
+        console.error(res.error);
+      }
+      render();
     });
-    document.getElementById("nav-bathroom").addEventListener("click", async () => {
-        state.room = "bathroom";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
-    });
-    document.getElementById("nav-living_room").addEventListener("click", async () => {
-        state.room = "living_room";
-        const res = await api.updateData(state.suiteConfig);
-        if (res.error) {
-            console.error(res.error);
-        }
-        render();
+  document
+    .getElementById('nav-living_room')
+    .addEventListener('click', async () => {
+      state.room = 'living_room';
+      const res = await api.updateData(state.suiteConfig);
+      if (res.error) {
+        console.error(res.error);
+      }
+      render();
     });
 }
 
@@ -109,20 +124,23 @@ async function createRoomBar() {
  * Renders the screen based on the current state.
  */
 function render() {
-    switch (state.tab) {
-        case "lights":
-            renderLights(state);
-            break;
-        case "climate":
-            renderClimate(state);
-            break;
-        case "blinds":
-            renderBlinds(state);
-            break;
-        case "settings":
-            renderSettings(state);
-            break;
-    }
+  switch (state.tab) {
+    case 'lights':
+      renderLights(state);
+      break;
+    case 'climate':
+      renderClimate(state);
+      break;
+    case 'blinds':
+      renderBlinds(state);
+      break;
+    case 'settings':
+      renderSettings(state);
+      break;
+    case 'eco':
+      renderEco(state);
+      break;
+  }
 }
 
 init();

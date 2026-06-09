@@ -37,12 +37,12 @@ export async function renderClimate(state) {
                 </div>
             </div>
             <div class='value-setter-row'>
-              <button class='square-button'>-</button>
+              <button class='square-button ${climateControl.target_temp > 16 ? '' : 'off'}'>-</button>
               <div class='value-displayer'>
                 <span class='main-value'>${climateControl.target_temp}</span>
                 <span class='unit'>°C</span>
               </div>              
-              <button class='square-button'>+</button>              
+              <button class='square-button ${climateControl.target_temp < 30 ? '' : 'off'}'>+</button>              
             </div>
 
             <div class='description-wrapper'>
@@ -56,7 +56,7 @@ export async function renderClimate(state) {
         </div>
     `;
   const on = climateControl.fan.state == 'on' ? true : false;
-  let FanCard = `
+  let fanCard = `
         <div class='card'>
             <div class='card-header'>
                 <div style='display: flex; gap: 20px; align-items: center'>
@@ -79,7 +79,7 @@ export async function renderClimate(state) {
                             fill='#CAC4D0'
                         />
                     </svg>
-                    <span class='card-name'>Fan Mode</span>
+                    <span class='card-name'>Fan mode</span>
                 </div>
                 <button class="toggle ${on ? 'on' : 'off'}">
                   <div class="toggle-knob"></div>
@@ -95,7 +95,7 @@ export async function renderClimate(state) {
         </div>
     `;
   document.getElementById('climate-list').innerHTML =
-    temperatureCard + ' ' + FanCard;
+    temperatureCard + ' ' + fanCard;
   // Add events and render
   initEvents(state);
 }
