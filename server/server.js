@@ -3,6 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const {
     getAllInfo,
+    updateAllInfo,
     getAllRooms,
     getRoom,
     toggleLight,
@@ -35,6 +36,8 @@ app.get("/", (req, res) => {
 });
 // Get all suite configuration
 app.get("/config", getAllInfo);
+// Update all suite configuration
+app.post("/config", updateAllInfo);
 // Get all rooms info
 app.get("/rooms", getAllRooms);
 // Get specific room info

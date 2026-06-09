@@ -42,6 +42,52 @@ const getAllInfo = (req, res) => {
     if (data === null) return res.status(500).json({ error: "Error reading data" });
     res.status(200).json(data);
 };
+function deepMerge(target, source) {
+    for (const key in source) {
+        if (source[key] instanceof Object && key in target) {
+            if (Array.isArray(source[key]) && Array.isArray(target[key])) {
+                source[key].forEach(srcItem => {
+                    if (srcItem && srcItem.name) {
+                        const targetItem = target[key].find(t => t.name === srcItem.name);
+                        if (targetItem) {
+                            deepMerge(targetItem, srcItem);
+                        } else {
+                            target[key].push(srcItem);
+                        }
+                    } else {
+                        // Se non c'è name, non sappiamo come fare il merge, quindi aggiungiamo o sostituiamo.
+                    }
+                });
+            } else {
+                Object.assign(target[key], deepMerge(target[key], source[key]));
+            }
+        } else {
+            target[key] = source[key];
+        }
+    }
+    return target;
+}
+
+/**
+ * Updates the configuration of the whole suite by merging the requested partial JSON.
+ * @param {*} req HTTP request.
+ * @param {*} res HTTP response.
+ */
+const updateAllInfo = (req, res) => {
+    if (!req.body) return res.status(400).json({ error: "Body missing" });
+    
+    const data = readData();
+    if (data === null) return res.status(500).json({ error: "Error reading data" });
+
+    // Effettua un deep merge dei dati
+    const mergedData = deepMerge(data, req.body);
+
+    if (writeData(mergedData)) {
+        return res.status(200).json("System data updated successfully");
+    } else {
+        return res.status(500).json({ error: "Error writing data" });
+    }
+};
 /**
  * Returns the list of all rooms.
  * @param {*} req HTTP request.
@@ -267,6 +313,7 @@ const setCurtainPosition = (req, res) => {
 
 module.exports = {
     getAllInfo,
+    updateAllInfo,
     getAllRooms,
     getRoom,
     toggleLight,
