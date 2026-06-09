@@ -28,7 +28,7 @@
         "curtains": [
           {
             "name": "Window blind 1",
-            "state": "open"
+            "state": "closed"
           },
           {
             "name": "Window blind 2",
@@ -67,11 +67,11 @@
           {
             "name": "Ceiling light 1",
             "state": "on",
-            "brightness": 0
+            "brightness": "54"
           },
           {
             "name": "Ceiling light 2",
-            "state": "off",
+            "state": "on",
             "brightness": 0
           }
         ],
@@ -91,14 +91,14 @@
           },
           {
             "name": "Window blind 2",
-            "state": "closed"
+            "state": "open"
           }
         ]
       }
     },
     "eco_mode": "on",
     "settings": {
-      "learning_mode": "off"
+      "learning_mode": "on"
     }
   }
 }
