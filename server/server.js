@@ -2,17 +2,11 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const {
+  updateAllInfo,
   getAllInfo,
   getAllRooms,
   getRoom,
-  updateData,
-  //toggleLight,
-  //setLightBrightness,
-  //toggleHVAC,
-  //setTemperature,
-  //toggleFan,
-  //setFanSpeed,
-  //setCurtainPosition,
+  updateData
 } = require('./controller.js');
 
 const app = express();
@@ -35,29 +29,16 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 // Get all suite configuration
-app.get('/config', getAllInfo);
+app.get("/config", getAllInfo);
+// Update all suite configuration
+app.post("/config", updateAllInfo);
 // Get all rooms info
 app.get('/rooms', getAllRooms);
 // Get specific room info
 app.get('/rooms/:room', getRoom);
 // Update json file
 app.post('/update', updateData);
-/*
-// Toggle light state
-app.post("/rooms/:room/lights/:lightName/toggle", toggleLight);
-// Set light brightness
-app.post("/rooms/:room/lights/:lightName/brightness", setLightBrightness);
-// Toggle HVAC state
-app.post("/rooms/:room/hvac/toggle", toggleHVAC);
-// Set target temperature
-app.post("/rooms/:room/hvac/target", setTemperature);
-// Toggle fan state
-app.post("/rooms/:room/hvac/fan/toggle", toggleFan);
-// Set fan speed
-app.post("/rooms/:room/hvac/fan/speed", setFanSpeed);
-// Set curtain position
-app.post("/rooms/:room/curtains/:curtainName/position", setCurtainPosition);
-*/
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`ARIS server listening on http://localhost:${PORT}`);
