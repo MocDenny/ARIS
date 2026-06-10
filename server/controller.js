@@ -1,7 +1,7 @@
 // Controller functions to setup server routes and handle requests.
 import fs from 'fs';
 import path from 'path';
-import { getRoomConfig } from '../client/js/render.js';
+import { getRoomConfig, setRoomConfig } from '../client/js/render.js';
 import * as wrapper from '../client/wrapper.js';
 
 const __dirname = import.meta.dirname;
@@ -33,52 +33,7 @@ const getAllInfo = (req, res) => {
     return res.status(500).json({ error: 'Error reading data' });
   res.status(200).json(data);
 };
-function deepMerge(target, source) {
-    for (const key in source) {
-        if (source[key] instanceof Object && key in target) {
-            if (Array.isArray(source[key]) && Array.isArray(target[key])) {
-                source[key].forEach(srcItem => {
-                    if (srcItem && srcItem.name) {
-                        const targetItem = target[key].find(t => t.name === srcItem.name);
-                        if (targetItem) {
-                            deepMerge(targetItem, srcItem);
-                        } else {
-                            target[key].push(srcItem);
-                        }
-                    } else {
-                        // Se non c'è name, non sappiamo come fare il merge, quindi aggiungiamo o sostituiamo.
-                    }
-                });
-            } else {
-                Object.assign(target[key], deepMerge(target[key], source[key]));
-            }
-        } else {
-            target[key] = source[key];
-        }
-    }
-    return target;
-}
 
-/**
- * Updates the configuration of the whole suite by merging the requested partial JSON.
- * @param {*} req HTTP request.
- * @param {*} res HTTP response.
- */
-const updateAllInfo = (req, res) => {
-    if (!req.body) return res.status(400).json({ error: "Body missing" });
-    
-    const data = readData();
-    if (data === null) return res.status(500).json({ error: "Error reading data" });
-
-    // Effettua un deep merge dei dati
-    const mergedData = deepMerge(data, req.body);
-
-    if (writeData(mergedData)) {
-        return res.status(200).json("System data updated successfully");
-    } else {
-        return res.status(500).json({ error: "Error writing data" });
-    }
-};
 /**
  * Returns the list of all rooms.
  * @param {*} req HTTP request.
@@ -115,7 +70,7 @@ const updateData = (req, res) => {
   try {
     fs.writeFileSync(DATA_PATH, JSON.stringify(getRoomConfig(), null, 2));
   } catch (err) {
-    return res.status(400).json({ error: "Error writing data" });
+    return res.status(400).json({ error: 'Error writing data' });
   }
   return res.status(200).json('Successfully updated json');
 };
@@ -133,33 +88,107 @@ const recordingStopped = (req, res) => {
 /**
  * Returns all room information after synchronizing information with the application state.
  * @param {*} req
- * @param {*} res 
+ * @param {*} res
  */
-const getSyncData =  async (req, res) => {
+const getSyncData = async (req, res) => {
   // update json with state
-  await wrapper.updateData();
-  return res.status(200).json(getRoomConfig());
+  const res = await wrapper.updateData();
+  return res;
 };
 
 /**
- * Updates state and json file, with the partial information given.
- * @param {*} req
- * @param {*} res 
+ * Updates the configuration of the whole suite by merging the requested partial JSON with the body parameter.
+ * @param {*} req HTTP request.
+ * @param {*} res HTTP response.
  */
-const partialUpdateData =  async (req, res) => {
-  //
-  await wrapper.updateData();
-  return res.status(200).json(getRoomConfig());
+const updateDataSection = async (req, res) => {
+  if (!req.body) return res.status(400).json({ error: 'Body missing' });
+  // Change the state variable and then update the JSON file
+  const mergedData = deepMerge(getRoomConfig(), req.body);
+  setRoomConfig(mergedData);
+  const res = await wrapper.updateData();
+  return res;
 };
+
+/**
+ * Takes target object and updates it with the keys and values of the source object.
+ * @param {*} target object to modify
+ * @param {*} source object with the information to transfer
+ * @returns modified target object
+ */
+function deepMerge(target, source) {
+  for (const key in source) {
+    // Change json only if a key exists in the target object
+    if (key in target) {
+      if (source[key] instanceof Object) {
+        if (Array.isArray(source[key]) && Array.isArray(target[key])) {
+          source[key].forEach((srcItem) => {
+            if (srcItem && srcItem.name) {
+              const targetItem = target[key].find(
+                (t) => t.name === srcItem.name
+              );
+              if (targetItem) {
+                deepMerge(targetItem, srcItem);
+              }
+            }
+          });
+        } else {
+          Object.assign(target[key], deepMerge(target[key], source[key]));
+        }
+      } else {
+        target[key] = validateField(key, target[key], source[key]);
+      }
+    }
+  }
+  return target;
+}
+
+/**
+ * Validates modified data of the room. The deepMerge function does not add other fields, but might introduce invalid values in the json.
+ * @param {*} key object key that has to be modified
+ * @param {*} currentValue current value of object
+ * @param {*} newValue value to update the object with
+ */
+function validateField(key, currentValue, newValue) {
+  if (key == 'speed' || key == 'brightness') {
+    // Value has to be a number between 0-100
+    if (!isNaN(newValue)) {
+      newValue = Number(newValue);
+      // Check number is between 0-100
+      return Math.min(100, Math.max(0, newValue));
+    }
+  } else if (key == 'eco_mode' || key == 'learning_mode' || key == 'state') {
+    // Accepted value are only open, closed, on, off
+    const curtainsValues = ['open', 'closed'];
+    const standardValues = ['on', 'off'];
+    if (currentValue in curtainsValues) {
+      if (newValue in curtainsValues) {
+        return newValue;
+      }
+    } else {
+      if (newValue in standardValues) {
+        return newValue;
+      }
+    }
+  } else if (key == 'target_temp' || key == 'current_temp') {
+    // Value has to be a number between 16-30
+    if (!isNaN(newValue)) {
+      newValue = Number(newValue);
+      // Check number is between 16-30
+      return Math.min(30, Math.max(16, newValue));
+    }
+  }
+  // Otherwise field cannot be changed
+  return currentValue;
+}
 
 export {
   getAllInfo,
   getAllRooms,
   getRoom,
   updateData,
-  updateAllInfo,
-  partialUpdateData,
+  updateDataSection,
   recordingStarted,
   recordingStopped,
-  getSyncData
+  getSyncData,
 };

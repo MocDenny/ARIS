@@ -31,6 +31,13 @@ const state = {
 export function getRoomConfig(){
   return state.suiteConfig
 }
+/**
+ * Sets room config of the state variable.
+ * @param {*} roomConfig complete room configuration used to update state
+ */
+export function setRoomConfig(roomConfig){
+  state.suiteConfig = roomConfig;
+}
 
 //-----------------------------------------------------------
 export async function init() {

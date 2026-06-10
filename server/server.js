@@ -6,11 +6,10 @@ import {
   getAllRooms,
   getRoom,
   updateData,
-  updateAllInfo,
   recordingStarted,
   recordingStopped,
   getSyncData,
-  partialUpdateData,
+  updateDataSection,
 } from './controller.js';
 
 const __dirname = import.meta.dirname;
@@ -35,8 +34,6 @@ app.get('/', (req, res) => {
 });
 // Get all suite configuration
 app.get("/config", getAllInfo);
-// Update all suite configuration
-app.post("/config", updateAllInfo);
 // Get all rooms info
 app.get('/rooms', getAllRooms);
 // Get specific room info
@@ -48,7 +45,7 @@ app.post('/update', updateData);
 app.post('/recording/start', recordingStarted);
 app.post('/recording/stop', recordingStopped);
 app.get('/recording/rooms', getSyncData);
-app.post('/recording/update', partialUpdateData);
+app.post('/recording/update', updateDataSection);
 
 // Start the server
 app.listen(PORT, () => {
