@@ -1,6 +1,10 @@
 // Controller functions to setup server routes and handle requests.
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { getRoomConfig } from '../client/js/render.js';
+import * as wrapper from '../client/wrapper.js';
+
+const __dirname = import.meta.dirname;
 const DATA_PATH = path.join(__dirname, 'data.json');
 
 /**
@@ -57,24 +61,58 @@ const getRoom = (req, res) => {
 };
 
 /**
- * Overwrites existing data in the JSON file with the provided data.
+ * Overwrites existing data in the JSON file with the sdata saved in the application's state.
  * @param {*} req HTTP request.
  * @param {*} res HTTP response.
  */
 const updateData = (req, res) => {
-  if (!req.body || !req.body.data)
-    return res.status(400).json({ error: "Parameter 'data' missing" });
   try {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(req.body.data, null, 2));
+    fs.writeFileSync(DATA_PATH, JSON.stringify(getRoomConfig(), null, 2));
   } catch (err) {
-    return res.status(400).json({ error: "Parameter 'data' missing" });
+    return res.status(400).json({ error: "Error writing data" });
   }
   return res.status(200).json('Successfully updated json');
 };
 
-module.exports = {
+/* Button push detectors ──────────────────────────────────────────────── */
+const recordingStarted = (req, res) => {
+  return res.status(200).json('Successfully sent signal');
+};
+
+const recordingStopped = (req, res) => {
+  return res.status(200).json('Successfully sent signal');
+};
+
+/* Other Vocal assistant endpoints */
+/**
+ * Returns all room information after synchronizing information with the application state.
+ * @param {*} req
+ * @param {*} res 
+ */
+const getSyncData =  async (req, res) => {
+  // update json with state
+  await wrapper.updateData();
+  return res.status(200).json(getRoomConfig());
+};
+
+/**
+ * Updates state and json file, with the partial information given.
+ * @param {*} req
+ * @param {*} res 
+ */
+const partialUpdateData =  async (req, res) => {
+  //
+  await wrapper.updateData();
+  return res.status(200).json(getRoomConfig());
+};
+
+export {
   getAllInfo,
   getAllRooms,
   getRoom,
-  updateData
+  updateData,
+  partialUpdateData,
+  recordingStarted,
+  recordingStopped,
+  getSyncData
 };

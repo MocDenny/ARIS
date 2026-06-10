@@ -26,11 +26,10 @@ async function getRoom(roomName) {
 
 /*Update ──────────────────────────────────────────────── */
 
-async function updateData(data) {
+async function updateData() {
   const res = await fetch(`${BASE}/update`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ data }),
   });
   return res.json();
 }

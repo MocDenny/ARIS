@@ -1,20 +1,18 @@
-const express = require('express');
-const fs = require('fs');
-const path = require('path');
-const {
+import express from 'express';
+import fs from 'fs';
+import path from 'path';
+import {
   getAllInfo,
   getAllRooms,
   getRoom,
   updateData,
-  //toggleLight,
-  //setLightBrightness,
-  //toggleHVAC,
-  //setTemperature,
-  //toggleFan,
-  //setFanSpeed,
-  //setCurtainPosition,
-} = require('./controller.js');
+  recordingStarted,
+  recordingStopped,
+  getSyncData,
+  partialUpdateData,
+} from './controller.js';
 
+const __dirname = import.meta.dirname;
 const app = express();
 const PORT = 3000;
 const DATA_PATH = path.join(__dirname, 'data.json');
@@ -42,22 +40,13 @@ app.get('/rooms', getAllRooms);
 app.get('/rooms/:room', getRoom);
 // Update json file
 app.post('/update', updateData);
-/*
-// Toggle light state
-app.post("/rooms/:room/lights/:lightName/toggle", toggleLight);
-// Set light brightness
-app.post("/rooms/:room/lights/:lightName/brightness", setLightBrightness);
-// Toggle HVAC state
-app.post("/rooms/:room/hvac/toggle", toggleHVAC);
-// Set target temperature
-app.post("/rooms/:room/hvac/target", setTemperature);
-// Toggle fan state
-app.post("/rooms/:room/hvac/fan/toggle", toggleFan);
-// Set fan speed
-app.post("/rooms/:room/hvac/fan/speed", setFanSpeed);
-// Set curtain position
-app.post("/rooms/:room/curtains/:curtainName/position", setCurtainPosition);
-*/
+
+/** Endpoints for vocal assistant button state */
+app.post('/recording/start', recordingStarted);
+app.post('/recording/stop', recordingStopped);
+app.get('/recording/rooms', getSyncData);
+app.post('/recording/update', partialUpdateData);
+
 // Start the server
 app.listen(PORT, () => {
   console.log(`ARIS server listening on http://localhost:${PORT}`);

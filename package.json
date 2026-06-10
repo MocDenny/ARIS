@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Adaptive Room Intelligence System",
   "main": "server/server.js",
+  "type": "module",
   "scripts": {
     "start": "nodemon server/server.js"
   },
