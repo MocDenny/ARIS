@@ -1,6 +1,8 @@
 import express from 'express';
 import fs from 'fs';
 import path from 'path';
+import { createServer } from 'http';
+import { Server } from 'socket.io';
 import {
   getAllInfo,
   getAllRooms,
@@ -32,7 +34,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 // Get all suite configuration
-app.get("/config", getAllInfo);
+app.get('/config', getAllInfo);
 // Get all rooms info
 app.get('/rooms', getAllRooms);
 // Get specific room info
@@ -45,7 +47,12 @@ app.post('/recording/start', recordingStarted);
 app.post('/recording/stop', recordingStopped);
 app.post('/recording/update', updateDataSection);
 
+// Socket connection is required to prompt client to switch page when button press is detected
+const httpServer = createServer(app);
+export const io = new Server(httpServer);
+io.on('connection', (socket) => {
+});
 // Start the server
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`ARIS server listening on http://localhost:${PORT}`);
 });
