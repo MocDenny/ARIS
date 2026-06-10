@@ -1,21 +1,23 @@
-import * as api from '../../wrapper.js'
-import { I } from '../icon.js'
+import * as api from '../../wrapper.js';
+import { I } from '../icon.js';
 
 export async function renderBlinds(state) {
-  // 1. carica il template HTML
-  const res = await fetch('html/blinds.html')
-  const html = await res.text()
-  document.getElementById('screen').innerHTML = html
+  // 1. Load HTML template
+  const res = await fetch('html/blinds.html');
+  const html = await res.text();
+  document.getElementById('screen').innerHTML = html;
 
-  // 2. popola i dati
-  const room = state.suiteConfig.room_config.rooms[state.room]
-  const curtains = room.curtains
-  document.getElementById('screen-room-label').textContent = room.name
+  // 2. Load data
+  let suiteConfig = await api.getAllInfo();
+  const room = suiteConfig.room_config.rooms[state.room];
+  const curtains = room.curtains;
+  document.getElementById('screen-room-label').textContent = room.name;
 
-  // 3. genera le card
-  document.getElementById('curtains-list').innerHTML = curtains.map((curtain, idx) => {
-    const open = curtain.state === 'open'
-    return `
+  // 3. Generate cards
+  document.getElementById('curtains-list').innerHTML = curtains
+    .map((curtain, idx) => {
+      const open = curtain.state === 'open';
+      return `
       <div class="card ${open ? '' : 'closed'}" data-index="${idx}">
         <div class="card-header">
           <div style="display: flex; gap:20px; align-items: center;">
@@ -33,36 +35,39 @@ export async function renderBlinds(state) {
           ${open ? I.openCurtain : I.openCurtainWhite}
           </div>
         </div>
-      </div>`
-  }).join('')
+      </div>`;
+    })
+    .join('');
 
-  // 4. attacca gli eventi
-  initEvents(state)
+  // 4. Add event listeners
+  initEvents(state, suiteConfig);
 }
-//TODO riuscire a disabilitare il button quando viene cliccato
-function initEvents(state) {
-  // toggle
-  document.getElementById('curtains-list').addEventListener('click', async (e) => {
-    const btnClose = e.target.closest('.button-curtains-close')
-    const btnOpen = e.target.closest('.button-curtains-open')
 
-    if (!btnClose && !btnOpen) return
+function initEvents(state, suiteConfig) {
+  // Toggle
+  document
+    .getElementById('curtains-list')
+    .addEventListener('click', async (e) => {
+      const btnClose = e.target.closest('.button-curtains-close');
+      const btnOpen = e.target.closest('.button-curtains-open');
 
-    const btn = btnClose || btnOpen
-    btn.classList.add('pressing')
+      if (!btnClose && !btnOpen) return;
 
-    const card = e.target.closest('.card')
-    const curtainIdx = card.dataset.index
-    const curtain = state.suiteConfig.room_config.rooms[state.room].curtains[curtainIdx]
+      const btn = btnClose || btnOpen;
+      btn.classList.add('pressing');
 
-    if (!curtain) return
+      const card = e.target.closest('.card');
+      const curtainIdx = card.dataset.index;
+      const curtain =
+        suiteConfig.room_config.rooms[state.room].curtains[curtainIdx];
 
-    const newState = btnOpen ? "open" : "closed"
+      if (!curtain) return;
 
-    await new Promise(r => setTimeout(r, 160))
-    curtain.state = newState
-    renderBlinds(state)
+      const newState = btnOpen ? 'open' : 'closed';
 
-  })
-
+      await new Promise((r) => setTimeout(r, 160));
+      curtain.state = newState;
+      api.updateData(suiteConfig);
+      renderBlinds(state);
+    });
 }

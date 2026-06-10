@@ -6,7 +6,8 @@ export async function renderClimate(state) {
   const html = await res.text();
   document.getElementById('screen').innerHTML = html;
   // Fetch data
-  const room = state.suiteConfig.room_config.rooms[state.room];
+  let suiteConfig = await api.getAllInfo();
+  const room = suiteConfig.room_config.rooms[state.room];
   const climateControl = room.hvac;
   document.getElementById('screen-room-label').textContent = room.name;
   // Generate 'card' (A.K.A horizontal sections)
@@ -62,10 +63,10 @@ export async function renderClimate(state) {
   document.getElementById('climate-list').innerHTML =
     temperatureCard + ' ' + fanCard;
   // Add events and render
-  initEvents(state);
+  initEvents(state, suiteConfig);
 }
 
-function initEvents(state) {
+function initEvents(state, suiteConfig) {
   // Speed Fan Slider
   document.querySelectorAll('.slider-bar').forEach((slider) => {
     slider.style.setProperty('--value', slider.value);
@@ -76,11 +77,18 @@ function initEvents(state) {
       // To avoid problems due to the thumb invisibility
       slider.style.setProperty('--value', slider.value);
       document.querySelector('.slider-value').innerHTML = slider.value + '%';
-      // Update State variable
-      state.suiteConfig.room_config.rooms[state.room].hvac.fan.speed =
-        slider.value;
+      suiteConfig.room_config.rooms[state.room].hvac.fan.speed = Number(
+        slider.value
+      );
     });
   });
+  // Only send update tp JSON when user stopped holding down slider
+  document.querySelectorAll('.slider-bar').forEach((slider) => {
+    slider.addEventListener('change', () => {
+      api.updateData(suiteConfig);
+    });
+  });
+
   // Manage temperature
   document.querySelectorAll('.square-button').forEach((button) => {
     button.addEventListener('click', async (event) => {
@@ -107,8 +115,9 @@ function initEvents(state) {
         tempIndicator.innerHTML = Number(tempIndicator.innerHTML) - 1;
       }
       // Update State variable
-      state.suiteConfig.room_config.rooms[state.room].hvac.target_temp =
-        tempIndicator.innerHTML;
+      suiteConfig.room_config.rooms[state.room].hvac.target_temp = Number(
+        tempIndicator.innerHTML
+      );
       // Keep temperature between [16, 30]
       if (tempIndicator.innerHTML == 16) {
         // Disable '-' button
@@ -117,6 +126,7 @@ function initEvents(state) {
         // Disable '+' button
         event.target.classList.add('off');
       }
+      api.updateData(suiteConfig);
     });
   });
   // Toggle fan
@@ -140,6 +150,7 @@ function initEvents(state) {
       newState = 'off';
     }
     // Update State variable
-    state.suiteConfig.room_config.rooms[state.room].hvac.fan.state = newState;
+    suiteConfig.room_config.rooms[state.room].hvac.fan.state = newState;
+    api.updateData(suiteConfig);
   });
 }

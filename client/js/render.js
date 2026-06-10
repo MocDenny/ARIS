@@ -23,25 +23,10 @@ import { renderEco } from './screens/eco.js';
 const state = {
   tab: 'lights',
   room: 'bedroom',
-  suiteConfig: {},
 };
-/**
- * Returns room config stored in the state variable.
- */
-export function getRoomConfig(){
-  return state.suiteConfig
-}
-/**
- * Sets room config of the state variable.
- * @param {*} roomConfig complete room configuration used to update state
- */
-export function setRoomConfig(roomConfig){
-  state.suiteConfig = roomConfig;
-}
 
 //-----------------------------------------------------------
 export async function init() {
-  state.suiteConfig = await api.getAllInfo();
   await createSecNavBar();
   await createRoomBar();
   render();
@@ -56,45 +41,24 @@ async function createSecNavBar() {
   // Before changing tab update room configuration changes on JSON room configuration file
   document.getElementById('nav-lights').addEventListener('click', async () => {
     state.tab = 'lights';
-    const res = api.updateData();
-    if (res.error) {
-      // Error updating data
-      console.error(res.error);
-    }
     render();
   });
   document.getElementById('nav-climate').addEventListener('click', async () => {
     state.tab = 'climate';
-    const res = await api.updateData();
-    if (res.error) {
-      console.error(res.error);
-    }
     render();
   });
   document.getElementById('nav-blinds').addEventListener('click', async () => {
     state.tab = 'blinds';
-    const res = await api.updateData();
-    if (res.error) {
-      console.error(res.error);
-    }
     render();
   });
   document.getElementById('nav-eco').addEventListener('click', async () => {
     state.tab = 'eco';
-    const res = await api.updateData();
-    if (res.error) {
-      console.error(res.error);
-    }
     render();
   });
   document
     .getElementById('nav-settings')
     .addEventListener('click', async () => {
       state.tab = 'settings';
-      const res = await api.updateData();
-      if (res.error) {
-        console.error(res.error);
-      }
       render();
     });
 }
@@ -105,30 +69,18 @@ async function createSecNavBar() {
 async function createRoomBar() {
   document.getElementById('nav-bedroom').addEventListener('click', async () => {
     state.room = 'bedroom';
-    const res = await api.updateData();
-    if (res.error) {
-      console.error(res.error);
-    }
     render();
   });
   document
     .getElementById('nav-bathroom')
     .addEventListener('click', async () => {
       state.room = 'bathroom';
-      const res = await api.updateData();
-      if (res.error) {
-        console.error(res.error);
-      }
       render();
     });
   document
     .getElementById('nav-living_room')
     .addEventListener('click', async () => {
       state.room = 'living_room';
-      const res = await api.updateData();
-      if (res.error) {
-        console.error(res.error);
-      }
       render();
     });
 }

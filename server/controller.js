@@ -1,7 +1,6 @@
 // Controller functions to setup server routes and handle requests.
 import fs from 'fs';
 import path from 'path';
-import { getRoomConfig, setRoomConfig } from '../client/js/render.js';
 import * as wrapper from '../client/wrapper.js';
 
 const __dirname = import.meta.dirname;
@@ -62,15 +61,16 @@ const getRoom = (req, res) => {
 };
 
 /**
- * Overwrites existing data in the JSON file with the sdata saved in the application's state.
+ * Overwrites existing data in the JSON file with the given data in the body of the request.
  * @param {*} req HTTP request.
  * @param {*} res HTTP response.
  */
 const updateData = (req, res) => {
+  if (!req.body) return res.status(400).json({ error: 'Missing body' });
   try {
-    fs.writeFileSync(DATA_PATH, JSON.stringify(getRoomConfig(), null, 2));
+    fs.writeFileSync(DATA_PATH, JSON.stringify(req.body, null, 2));
   } catch (err) {
-    return res.status(400).json({ error: 'Error writing data' });
+    return res.status(500).json({ error: 'Error writing data' });
   }
   return res.status(200).json('Successfully updated json');
 };
@@ -85,16 +85,6 @@ const recordingStopped = (req, res) => {
 };
 
 /* Other Vocal assistant endpoints */
-/**
- * Returns all room information after synchronizing information with the application state.
- * @param {*} req
- * @param {*} res
- */
-const getSyncData = async (req, res) => {
-  // update json with state
-  const res = await wrapper.updateData();
-  return res;
-};
 
 /**
  * Updates the configuration of the whole suite by merging the requested partial JSON with the body parameter.
@@ -102,12 +92,17 @@ const getSyncData = async (req, res) => {
  * @param {*} res HTTP response.
  */
 const updateDataSection = async (req, res) => {
-  if (!req.body) return res.status(400).json({ error: 'Body missing' });
-  // Change the state variable and then update the JSON file
-  const mergedData = deepMerge(getRoomConfig(), req.body);
-  setRoomConfig(mergedData);
-  const res = await wrapper.updateData();
-  return res;
+  if (!req.body) return res.status(400).json({ error: 'Missing body' });
+
+  // Get whole room configuration
+  const data = readData();
+  if (data === null)
+    return res.status(500).json({ error: 'Error reading data' });
+
+  // Change the retrieved room configuration and then update the JSON file
+  const mergedData = deepMerge(data, req.body);
+  const result = await wrapper.updateData(mergedData);
+  return res.json(result);
 };
 
 /**
@@ -161,12 +156,12 @@ function validateField(key, currentValue, newValue) {
     // Accepted value are only open, closed, on, off
     const curtainsValues = ['open', 'closed'];
     const standardValues = ['on', 'off'];
-    if (currentValue in curtainsValues) {
-      if (newValue in curtainsValues) {
+    if (curtainsValues.includes(curtainsValues)) {
+      if (curtainsValues.includes(newValue)) {
         return newValue;
       }
     } else {
-      if (newValue in standardValues) {
+      if (standardValues.includes(newValue)) {
         return newValue;
       }
     }
@@ -190,5 +185,4 @@ export {
   updateDataSection,
   recordingStarted,
   recordingStopped,
-  getSyncData,
 };

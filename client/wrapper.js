@@ -25,18 +25,17 @@ async function getRoom(roomName) {
 }
 
 /*Update ──────────────────────────────────────────────── */
-
-async function updateData() {
+/**
+ * Updates JSON data with the 'data' parameter given.
+ * @param {*} data 
+ */
+async function updateData(data) {
   const res = await fetch(`${BASE}/update`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data),
   });
   return res.json();
 }
 
-export {
-  getAllInfo,
-  getRooms,
-  getRoom,
-  updateData
-};
+export { getAllInfo, getRooms, getRoom, updateData };

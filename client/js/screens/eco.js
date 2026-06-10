@@ -5,7 +5,8 @@ export async function renderEco(state) {
   const html = await res.text();
   document.getElementById('screen').innerHTML = html;
   // Fetch data
-  const on = state.suiteConfig.room_config.eco_mode == 'on' ? true : false;
+  let suiteConfig = await api.getAllInfo();
+  const on = suiteConfig.room_config.eco_mode == 'on' ? true : false;
   document.getElementById('screen-room-label').textContent = '';
   // Generate 'card' (A.K.A horizontal sections)
   let ecoCard = `
@@ -46,10 +47,10 @@ export async function renderEco(state) {
   document.getElementById('eco-list').innerHTML = ecoCard;
   generateContent(on);
   // Add events and render
-  initEvents(state);
+  initEvents(state, suiteConfig);
 }
 
-function initEvents(state) {
+function initEvents(state, suiteConfig) {
   // Toggle eco mode
   document.querySelector('.toggle').addEventListener('click', async (event) => {
     // Get toggle status
@@ -78,7 +79,8 @@ function initEvents(state) {
     // Change card look
     document.querySelector('.special-card').classList.toggle('on');
     // Update State variable
-    state.suiteConfig.room_config.eco_mode = newState;
+    suiteConfig.room_config.eco_mode = newState;
+    api.updateData(suiteConfig);
   });
 }
 

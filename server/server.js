@@ -8,7 +8,6 @@ import {
   updateData,
   recordingStarted,
   recordingStopped,
-  getSyncData,
   updateDataSection,
 } from './controller.js';
 
@@ -44,7 +43,6 @@ app.post('/update', updateData);
 /** Endpoints for vocal assistant button state */
 app.post('/recording/start', recordingStarted);
 app.post('/recording/stop', recordingStopped);
-app.get('/recording/rooms', getSyncData);
 app.post('/recording/update', updateDataSection);
 
 // Start the server

@@ -1,33 +1,34 @@
-import { I } from '../icon.js'
+import { I } from '../icon.js';
+import * as api from '../../wrapper.js';
 
 export async function renderSettings(state) {
-    const res = await fetch('html/settings.html')
-    const html = await res.text()
-    document.getElementById('screen').innerHTML = html
+  const res = await fetch('html/settings.html');
+  const html = await res.text();
+  document.getElementById('screen').innerHTML = html;
 
-    document.getElementById('iconProfile').innerHTML = I.profileIcon
+  document.getElementById('iconProfile').innerHTML = I.profileIcon;
+  let suiteConfig = await api.getAllInfo();
+  const on = suiteConfig.room_config.settings.learning_mode === 'on';
 
-    const on = state.suiteConfig.room_config.settings.learning_mode === 'on'
-
-    renderPreferencesCard(on)
-    initEvent(state)
+  renderPreferencesCard(on);
+  initEvent(state, suiteConfig);
 }
 
 function renderPreferencesCard(on) {
-    document.getElementById('toggle-container').innerHTML = `
+  document.getElementById('toggle-container').innerHTML = `
     <button class="toggle ${on ? 'on' : 'off'}" id="pref-toggle">
       <div class="toggle-knob"></div>
     </button>
-  `
+  `;
 
-    // card preferenze principale
-    const prefCard = document.getElementById('pref-card')
-    prefCard.className = `card ${on ? 'card-dark' : ''}`
+  // card preferenze principale
+  const prefCard = document.getElementById('pref-card');
+  prefCard.className = `card ${on ? 'card-dark' : ''}`;
 
-    // mostra/nasconde le card extra
-    const extraCards = document.getElementById('extra-cards')
-    if (on) {
-        extraCards.innerHTML = `
+  // mostra/nasconde le card extra
+  const extraCards = document.getElementById('extra-cards');
+  if (on) {
+    extraCards.innerHTML = `
   <div class="card card-extra">
     <div class="pills-grid">
       <div class="pill">Ecomode</div>
@@ -44,26 +45,25 @@ function renderPreferencesCard(on) {
       <span>›</span>
     </div>
   </div>
-`
-    } else {
-        extraCards.innerHTML = ''
-    }
+`;
+  } else {
+    extraCards.innerHTML = '';
+  }
 }
 
-function initEvent(state) {
-    document.getElementById('pref-toggle').addEventListener('click', () => {
-        const btn = document.getElementById('pref-toggle')
-        const isOn = btn.classList.contains('on')
+function initEvent(state, suiteConfig) {
+  document.getElementById('pref-toggle').addEventListener('click', () => {
+    const btn = document.getElementById('pref-toggle');
+    const isOn = btn.classList.contains('on');
 
-        btn.classList.toggle('on', !isOn)
-        btn.classList.toggle('off', isOn)
+    btn.classList.toggle('on', !isOn);
+    btn.classList.toggle('off', isOn);
 
-        const newState = isOn ? 'off' : 'on'
-        state.suiteConfig.room_config.settings.learning_mode = newState
+    const newState = isOn ? 'off' : 'on';
+    suiteConfig.room_config.settings.learning_mode = newState;
 
-        renderPreferencesCard(newState === 'on')
-
-        // riattacca il listener dopo il re-render
-        initEvent(state)
-    })
+    renderPreferencesCard(newState === 'on');
+    api.updateData(suiteConfig);
+    initEvent(state);
+  });
 }
