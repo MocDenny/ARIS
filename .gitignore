@@ -154,3 +154,7 @@ __pycache__/
 dist/
 build/
 *.spec
+# DS_STORE
+.DS_Store
+# data
+data.json

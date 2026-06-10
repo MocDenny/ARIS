@@ -6,33 +6,33 @@
         "name": "Bedroom",
         "lights": [
           {
-            "name": "ceiling_light_1",
+            "name": "Ceiling light 1",
             "state": "on",
-            "brightness": 0
+            "brightness": "49"
           },
           {
-            "name": "bedside_lamp_1",
+            "name": "Bedside lamp 1",
             "state": "on",
-            "brightness": 0
+            "brightness": 60
           }
         ],
         "hvac": {
           "state": "on",
-          "target_temp": 25,
+          "target_temp": "25",
           "current_temp": 19,
           "fan": {
             "state": "off",
-            "speed": 10
+            "speed": "51"
           }
         },
         "curtains": [
           {
-            "name": "window_blind_1",
+            "name": "Window blind 1",
             "state": "closed"
           },
           {
-            "name": "window_blind_2",
-            "state": "closed"
+            "name": "Window blind 2",
+            "state": "open"
           }
         ]
       },
@@ -40,7 +40,7 @@
         "name": "Bathroom",
         "lights": [
           {
-            "name": "ceiling_light_1",
+            "name": "Ceiling light 1",
             "state": "on",
             "brightness": 0
           }
@@ -56,8 +56,8 @@
         },
         "curtains": [
           {
-            "name": "window_blind_1",
-            "state": "closed"
+            "name": "Window blind 1",
+            "state": "open"
           }
         ]
       },
@@ -65,19 +65,19 @@
         "name": "Living Room",
         "lights": [
           {
-            "name": "ceiling_light_1",
+            "name": "Ceiling light 1",
             "state": "on",
-            "brightness": 0
+            "brightness": "54"
           },
           {
-            "name": "ceiling_light_2",
+            "name": "Ceiling light 2",
             "state": "on",
             "brightness": 0
           }
         ],
         "hvac": {
-          "state": "on",
-          "target_temp": 25,
+          "state": "off",
+          "target_temp": 20,
           "current_temp": 19,
           "fan": {
             "state": "off",
@@ -86,19 +86,19 @@
         },
         "curtains": [
           {
-            "name": "window_blind_1",
-            "state": "closed"
+            "name": "Window blind 1",
+            "state": "open"
           },
           {
-            "name": "window_blind_2",
-            "state": "closed"
+            "name": "Window blind 2",
+            "state": "open"
           }
         ]
       }
     },
-    "eco_mode": "off",
+    "eco_mode": "on",
     "settings": {
-      "learning_mode": "off"
+      "learning_mode": "on"
     }
   }
 }
