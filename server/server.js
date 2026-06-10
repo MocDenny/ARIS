@@ -6,6 +6,7 @@ import {
   getAllRooms,
   getRoom,
   updateData,
+  updateAllInfo,
   recordingStarted,
   recordingStopped,
   getSyncData,
@@ -33,7 +34,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'));
 });
 // Get all suite configuration
-app.get('/config', getAllInfo);
+app.get("/config", getAllInfo);
+// Update all suite configuration
+app.post("/config", updateAllInfo);
 // Get all rooms info
 app.get('/rooms', getAllRooms);
 // Get specific room info

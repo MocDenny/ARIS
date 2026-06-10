@@ -47,10 +47,10 @@
         ],
         "hvac": {
           "state": "on",
-          "target_temp": 20,
+          "target_temp": 25,
           "current_temp": 19,
           "fan": {
-            "state": "on",
+            "state": "off",
             "speed": 10
           }
         },
@@ -80,7 +80,7 @@
           "target_temp": 20,
           "current_temp": 19,
           "fan": {
-            "state": "on",
+            "state": "off",
             "speed": 10
           }
         },
