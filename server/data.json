@@ -18,21 +18,21 @@
         ],
         "hvac": {
           "state": "on",
-          "target_temp": 29,
+          "target_temp": 22,
           "current_temp": 19,
           "fan": {
-            "state": "off",
-            "speed": 51
+            "state": "on",
+            "speed": 32
           }
         },
         "curtains": [
           {
             "name": "Window blind 1",
-            "state": "open"
+            "state": "closed"
           },
           {
             "name": "Window blind 2",
-            "state": "open"
+            "state": "closed"
           }
         ]
       },
@@ -42,7 +42,7 @@
           {
             "name": "Ceiling light 1",
             "state": "on",
-            "brightness": 0
+            "brightness": "46"
           }
         ],
         "hvac": {
@@ -77,10 +77,10 @@
         ],
         "hvac": {
           "state": "off",
-          "target_temp": 20,
+          "target_temp": 19,
           "current_temp": 19,
           "fan": {
-            "state": "off",
+            "state": "on",
             "speed": 10
           }
         },
@@ -96,7 +96,7 @@
         ]
       }
     },
-    "eco_mode": "off",
+    "eco_mode": "on",
     "settings": {
       "learning_mode": "off"
     }

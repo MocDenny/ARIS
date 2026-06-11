@@ -17,6 +17,7 @@
   /* url of the font */
 }
 
+
 @font-face {
   font-family: manropeLight;
   /* set name */
@@ -175,77 +176,19 @@ body {
   padding: 14px;
 }
 
+#content-eco-on {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .special-card.on {
   background: #322F35;
   color: #fff;
 }
 
-/* ── SideNav ───────────────────────────────────────────────── */
-.side-nav {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 80px;
-  height: calc(100% - 80px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border-left: 0.5px solid #cac4d0;
-  background: #fff;
-}
 
-.nav-item {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-  padding: 0;
-}
 
-.nav-item.active {
-  background: rgb(50, 47, 53);
-}
-
-/* ── RoomBar ───────────────────────────────────────────────── */
-.room-bar {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  border-top: 0.5px solid #cac4d0;
-  background: #fff;
-}
-
-.room-item {
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-  padding: 0;
-}
-
-.room-item.active {
-  background: rgb(50, 47, 53);
-}
 
 /* ── Curtains ────────────────────────────────────────────── */
 
@@ -295,6 +238,11 @@ body {
   font-family: manropeLight;
   font-size: 16px;
   margin-left: 3px;
+  margin-bottom: 7px;
+}
+
+.learning-text-settings.tranfer {
+  color: #322F35;
 }
 
 .line {
@@ -348,8 +296,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: -20px;
-  /* sovrappone alla card sopra */
+  margin-top: 0;
 }
 
 .card-extra {
@@ -361,7 +308,6 @@ body {
 
 .card-transfer {
   width: 85%;
-  margin-top: 12px;
   padding: 14px 20px;
 }
 
@@ -411,4 +357,143 @@ body {
 .state-indicator.closed {
   color: #E0E0E0;
   font-family: manropeLight;
+}
+
+.text-eco {
+  font-family: manropeLight;
+  color: #322F35;
+  font-size: 15px;
+}
+
+.diveder-eco {
+  margin-top: 5px;
+  margin-bottom: 5px;
+  width: 200px;
+  height: 1px;
+  background: #dfdbe3;
+}
+
+.card-name-eco {
+  font-family: manropeRegular;
+  font-size: 17px;
+  margin-left: 3px;
+}
+
+
+/* navigation */
+
+
+/* ── SideNav ───────────────────────────────────────────────── */
+.side-nav {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+}
+
+.nav-item {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 0.5px solid #CAC4D0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+}
+
+.nav-item.active {
+  background: rgb(50, 47, 53);
+}
+
+.nav-pill-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-radius: 36px;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  background: var(--Schemes-On-Primary, #FFF);
+  width: 68px;
+  height: 200px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+
+.nav-pill-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 30px;
+}
+
+.nav-pill-container {
+  border-radius: 36px;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  background: var(--Schemes-On-Primary, #FFF);
+  width: 68px;
+  height: 206px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.circle {
+  border-radius: 22px;
+  border: 0.5px solid #CAC4D0;
+  background: rgba(255, 255, 255, 0.00);
+}
+
+
+
+/* ── RoomBar ───────────────────────────────────────────────── */
+.room-bar {
+  border-radius: 36px;
+  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  background: var(--Schemes-On-Primary, #FFF);
+  position: absolute;
+  width: 200px;
+  height: 68px;
+  bottom: 15px;
+  left: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #fff;
+}
+
+.room-item {
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  border: 0.5px solid #CAC4D0;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+}
+
+.room-item.active {
+  background: rgb(50, 47, 53);
+}
+
+.nav-item.active .material-symbols-outlined,
+.room-item.active .material-symbols-outlined {
+  color: #fff;
+
 }

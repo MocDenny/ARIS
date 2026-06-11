@@ -23,6 +23,11 @@ import { renderEco } from './screens/eco.js';
 const state = {
   tab: 'lights',
   room: 'bedroom',
+  previousTab: 'lights',
+  goBack() {
+    state.tab = state.previousTab;
+    render();
+  }
 };
 
 //-----------------------------------------------------------
@@ -52,15 +57,19 @@ async function createSecNavBar() {
     render();
   });
   document.getElementById('nav-eco').addEventListener('click', async () => {
+    if (state.tab !== 'eco' && state.tab !== 'settings') {
+      state.previousTab = state.tab;
+    }
     state.tab = 'eco';
     render();
   });
-  document
-    .getElementById('nav-settings')
-    .addEventListener('click', async () => {
-      state.tab = 'settings';
-      render();
-    });
+  document.getElementById('nav-settings').addEventListener('click', async () => {
+    if (state.tab !== 'eco' && state.tab !== 'settings') {
+      state.previousTab = state.tab;
+    }
+    state.tab = 'settings';
+    render();
+  });
 }
 
 /**
@@ -71,24 +80,53 @@ async function createRoomBar() {
     state.room = 'bedroom';
     render();
   });
-  document
-    .getElementById('nav-bathroom')
-    .addEventListener('click', async () => {
-      state.room = 'bathroom';
-      render();
-    });
-  document
-    .getElementById('nav-living_room')
-    .addEventListener('click', async () => {
-      state.room = 'living_room';
-      render();
-    });
+  document.getElementById('nav-bathroom').addEventListener('click', async () => {
+    state.room = 'bathroom';
+    render();
+  });
+  document.getElementById('nav-living_room').addEventListener('click', async () => {
+    state.room = 'living_room';
+    render();
+  });
+}
+
+/**
+ * Updates the active visual state of the navigation and room buttons.
+ */
+function updateActiveNav() {
+  const tabs = ['lights', 'climate', 'blinds', 'eco', 'settings'];
+  tabs.forEach((tab) => {
+    const el = document.getElementById(`nav-${tab}`);
+    if (el) {
+      el.classList.toggle('active', state.tab === tab);
+    }
+  });
+
+  const rooms = ['bedroom', 'bathroom', 'living_room'];
+  rooms.forEach((room) => {
+    const el = document.getElementById(`nav-${room}`);
+    if (el) {
+      el.classList.toggle('active', state.room === room);
+    }
+  });
 }
 
 /**
  * Renders the screen based on the current state.
  */
 function render() {
+  updateActiveNav();
+
+  // Manage room bar visibility
+  const roomBar = document.getElementById('room-bar');
+  if (roomBar) {
+    if (state.tab === 'eco' || state.tab === 'settings') {
+      roomBar.style.display = 'none';
+    } else {
+      roomBar.style.display = 'flex';
+    }
+  }
+
   switch (state.tab) {
     case 'lights':
       renderLights(state);

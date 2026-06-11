@@ -44,7 +44,7 @@ export async function renderClimate(state) {
         <div class='card'>
             <div class='card-header'>
                 <div style='display: flex; gap: 20px; align-items: center'>
-                    ${I.Fan}
+                    ${I.fan}
                     <span class='card-name'>Fan mode</span>
                 </div>
                 <button class="toggle ${on ? 'on' : 'off'}">

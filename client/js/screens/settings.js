@@ -6,7 +6,16 @@ export async function renderSettings(state) {
   const html = await res.text();
   document.getElementById('screen').innerHTML = html;
 
-  document.getElementById('iconProfile').innerHTML = I.profileIcon;
+  const backBtn = document.getElementById('btn-back');
+  if (backBtn) {
+    backBtn.addEventListener('click', () => {
+      state.goBack();
+    });
+  }
+
+  document.getElementById('iconProfile').innerHTML = I.profile;
+  document.getElementById('iconPreference').innerHTML = I.preference;
+
   let suiteConfig = await api.getAllInfo();
   const on = suiteConfig.room_config.settings.learning_mode === 'on';
 
@@ -16,8 +25,8 @@ export async function renderSettings(state) {
 
 function renderPreferencesCard(on) {
   document.getElementById('toggle-container').innerHTML = `
-    <button class="toggle ${on ? 'on' : 'off'}" id="pref-toggle">
-      <div class="toggle-knob"></div>
+    <button class="toggle-eco ${on ? 'on' : 'off'}" id="pref-toggle">
+      <div class="toggle-eco-knob ${on ? 'on' : 'off'}"></div>
     </button>
   `;
 
@@ -40,9 +49,9 @@ function renderPreferencesCard(on) {
 
   <div class="card card-transfer">
     <div style="display:flex;align-items:center;justify-content:center;gap:12px;cursor:pointer">
-      ${I.downloadIcon}
-      <span class="card-name">Transfer preferences</span>
-      <span>›</span>
+      ${I.transferPref}
+      <span class="learning-text-settings tranfer">Transfer preferences</span>
+      ${I.arrow}
     </div>
   </div>
 `;
@@ -52,18 +61,20 @@ function renderPreferencesCard(on) {
 }
 
 function initEvent(state, suiteConfig) {
-  document.getElementById('pref-toggle').addEventListener('click', () => {
-    const btn = document.getElementById('pref-toggle');
-    const isOn = btn.classList.contains('on');
+  const btn = document.getElementById('pref-toggle');
+  if (btn) {
+    btn.addEventListener('click', async () => {
+      const isOn = btn.classList.contains('on');
+      const newState = isOn ? 'off' : 'on';
 
-    btn.classList.toggle('on', !isOn);
-    btn.classList.toggle('off', isOn);
+      btn.classList.toggle('on', !isOn);
+      btn.classList.toggle('off', isOn);
 
-    const newState = isOn ? 'off' : 'on';
-    suiteConfig.room_config.settings.learning_mode = newState;
+      suiteConfig.room_config.settings.learning_mode = newState;
 
-    renderPreferencesCard(newState === 'on');
-    api.updateData(suiteConfig);
-    initEvent(state);
-  });
+      renderPreferencesCard(newState === 'on');
+      await api.updateData(suiteConfig);
+      initEvent(state, suiteConfig);
+    });
+  }
 }

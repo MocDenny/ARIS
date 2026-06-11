@@ -2,6 +2,7 @@ import { init } from './render.js';
 import { io } from 'https://cdn.socket.io/4.8.3/socket.io.esm.min.js';
 
 init();
+
 // Socket connection
 const socket = io();
 socket.on('recordingStarted', () => {
@@ -10,4 +11,3 @@ socket.on('recordingStarted', () => {
 socket.on('recordingStopped', () => {
   console.log('Exit Audio Wave screen'); 
 });
-
