@@ -114,7 +114,7 @@ function updateActiveNav() {
 /**
  * Renders the screen based on the current state.
  */
-function render() {
+export function render() {
   updateActiveNav();
 
   // Manage room bar visibility
