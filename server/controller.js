@@ -7,6 +7,9 @@ import * as wrapper from '../client/wrapper.js';
 const __dirname = import.meta.dirname;
 const DATA_PATH = path.join(__dirname, 'data.json');
 
+// URL del server FastAPI che fa da ponte verso Arduino
+const ARDUINO_BRIDGE_URL = 'http://localhost:8001';
+
 /**
  * Returns the current system data by reading the JSON file.
  * @returns JSON object with the current system data.
@@ -18,6 +21,30 @@ function readData() {
   } catch (err) {
     console.error('Error reading data:', err);
     return null;
+  }
+}
+
+/**
+ * Notifica il server FastAPI (Arduino Bridge) con il JSON completo aggiornato.
+ * Se il bridge non è raggiungibile, logga l'errore senza bloccare il sistema.
+ * @param {object} data - Il JSON completo della configurazione stanze.
+ */
+async function notifyArduino(data) {
+  try {
+    const response = await fetch(`${ARDUINO_BRIDGE_URL}/sync`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+    if (response.ok) {
+      const result = await response.json();
+      console.log(`[Arduino Bridge] ✅ Sync OK — ${result.commands_sent} comandi inviati`);
+    } else {
+      console.warn(`[Arduino Bridge] ⚠️ Risposta ${response.status}`);
+    }
+  } catch (err) {
+    // Il sistema funziona anche senza Arduino — non bloccare
+    console.warn(`[Arduino Bridge] ⚠️ Bridge non raggiungibile: ${err.message}`);
   }
 }
 
@@ -73,6 +100,8 @@ const updateData = (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: 'Error writing data' });
   }
+  // Notifica il bridge Arduino con i dati aggiornati
+  notifyArduino(req.body);
   return res.status(200).json('Successfully updated json');
 };
 
@@ -81,7 +110,8 @@ const recordingStarted = async (req, res) => {
   // Send socket message to client
   const sockets = await io.fetchSockets();
   if (sockets.length == 0) {
-    return res.status(400).json('No client connected to server');
+    console.warn('[Server] Nessun client connesso via Socket.IO, salto segnale recordingStarted');
+    return res.status(200).json('Nessun client connesso, segnale saltato');
   }
   sockets[0].emit('recordingStarted');
   return res.status(200).json('Successfully sent signal');
@@ -91,7 +121,8 @@ const recordingStopped = async (req, res) => {
   // Send socket message to client
   const sockets = await io.fetchSockets();
   if (sockets.length == 0) {
-    return res.status(400).json('No client connected to server');
+    console.warn('[Server] Nessun client connesso via Socket.IO, salto segnale recordingStopped');
+    return res.status(200).json('Nessun client connesso, segnale saltato');
   }
   sockets[0].emit('recordingStopped');
   return res.status(200).json('Successfully sent signal');
@@ -115,6 +146,8 @@ const updateDataSection = async (req, res) => {
   // Change the retrieved room configuration and then update the JSON file
   const mergedData = deepMerge(data, req.body);
   const result = await wrapper.updateData(mergedData);
+  // Notifica il bridge Arduino con i dati aggiornati (merge completo)
+  notifyArduino(mergedData);
   return res.json(result);
 };
 

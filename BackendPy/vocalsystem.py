@@ -10,8 +10,28 @@ class VocalSystem:
         self.llm = DeepSeekLLMService(api_key=api_key)
 
     def run(self):
+        def on_start():
+            try:
+                print("[VocalSystem] 📡 Invio POST /recording/start...")
+                resp = requests.post(f"{BACKEND_URL}/recording/start", timeout=2)
+                resp.raise_for_status()
+            except Exception as e:
+                print(f"[VocalSystem] ⚠️ Errore POST /recording/start: {e}")
+
+        def on_stop():
+            try:
+                print("[VocalSystem] 📡 Invio POST /recording/stop...")
+                resp = requests.post(f"{BACKEND_URL}/recording/stop", timeout=2)
+                resp.raise_for_status()
+            except Exception as e:
+                print(f"[VocalSystem] ⚠️ Errore POST /recording/stop: {e}")
+
         while True:
-            text = self.recognizer.listen_and_recognize_ptt(key="space")
+            text = self.recognizer.listen_and_recognize_ptt(
+                key="space",
+                on_start=on_start,
+                on_stop=on_stop
+            )
             if not text:
                 continue
 
@@ -34,18 +54,18 @@ class VocalSystem:
             print(f"[VocalSystem] 📁 JSON Stanza: {roomjsonContext}")
 
 
-            # Invia l'intero JSON aggiornato al backend
+            # Invia il JSON parziale aggiornato al backend
             if result:
                 try:
                     resp = requests.post(
-                        f"{BACKEND_URL}/config",
+                        f"{BACKEND_URL}/recording/update",
                         json=result,
                         timeout=3,
                     )
                     resp.raise_for_status()
-                    print(f"[VocalSystem] ✅ Configurazione JSON aggiornata sul server")
+                    print(f"[VocalSystem] ✅ Configurazione JSON aggiornata sul server via /recording/update")
                 except Exception as e:
-                    print(f"[VocalSystem] ⚠️ Errore POST /config: {e}")
+                    print(f"[VocalSystem] ⚠️ Errore POST /recording/update: {e}")
 
 
 if __name__ == "__main__":
