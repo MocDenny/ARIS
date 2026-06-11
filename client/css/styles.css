@@ -17,7 +17,6 @@
   /* url of the font */
 }
 
-
 @font-face {
   font-family: manropeLight;
   /* set name */
@@ -164,7 +163,7 @@ body {
   border-bottom: 0px;
 }
 
-.table div>div {
+.table div > div {
   border-bottom: 0px;
   display: flex;
   flex-direction: column;
@@ -183,12 +182,9 @@ body {
 }
 
 .special-card.on {
-  background: #322F35;
+  background: #322f35;
   color: #fff;
 }
-
-
-
 
 /* ── Curtains ────────────────────────────────────────────── */
 
@@ -234,7 +230,7 @@ body {
 .guest-room,
 .guest-days,
 .learning-text-settings {
-  color: #5C5C5C;
+  color: #5c5c5c;
   font-family: manropeLight;
   font-size: 16px;
   margin-left: 3px;
@@ -242,7 +238,7 @@ body {
 }
 
 .learning-text-settings.tranfer {
-  color: #322F35;
+  color: #322f35;
 }
 
 .line {
@@ -250,7 +246,7 @@ body {
   margin-bottom: 5px;
   width: 150px;
   height: 0.3px;
-  background: #CAC4D0;
+  background: #cac4d0;
 }
 
 .icon-preference-container {
@@ -260,7 +256,7 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
 }
 
 .card-dark {
@@ -322,7 +318,7 @@ body {
   align-items: center;
   aspect-ratio: 1/1;
   border-radius: 100px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   cursor: pointer;
   transition: transform 0.15s ease;
 }
@@ -346,7 +342,6 @@ body {
   animation: curtain-press 0.16s ease forwards;
 }
 
-
 .state-indicator {
   font-family: manropeLight;
   color: #585858;
@@ -355,13 +350,13 @@ body {
 }
 
 .state-indicator.closed {
-  color: #E0E0E0;
+  color: #e0e0e0;
   font-family: manropeLight;
 }
 
 .text-eco {
   font-family: manropeLight;
-  color: #322F35;
+  color: #322f35;
   font-size: 15px;
 }
 
@@ -379,9 +374,7 @@ body {
   margin-left: 3px;
 }
 
-
 /* navigation */
-
 
 /* ── SideNav ───────────────────────────────────────────────── */
 .side-nav {
@@ -402,7 +395,7 @@ body {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  border: 0.5px solid #CAC4D0;
+  border: 0.5px solid #cac4d0;
   background: transparent;
   display: flex;
   align-items: center;
@@ -421,8 +414,8 @@ body {
   flex-direction: column;
   gap: 8px;
   border-radius: 36px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
-  background: var(--Schemes-On-Primary, #FFF);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  background: var(--Schemes-On-Primary, #fff);
   width: 68px;
   height: 200px;
   align-items: center;
@@ -439,8 +432,8 @@ body {
 
 .nav-pill-container {
   border-radius: 36px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
-  background: var(--Schemes-On-Primary, #FFF);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  background: var(--Schemes-On-Primary, #fff);
   width: 68px;
   height: 206px;
   display: flex;
@@ -451,22 +444,20 @@ body {
 
 .circle {
   border-radius: 22px;
-  border: 0.5px solid #CAC4D0;
-  background: rgba(255, 255, 255, 0.00);
+  border: 0.5px solid #cac4d0;
+  background: rgba(255, 255, 255, 0);
 }
-
-
 
 /* ── RoomBar ───────────────────────────────────────────────── */
 .room-bar {
   border-radius: 36px;
-  border: 0.5px solid var(--Schemes-Outline-Variant, #CAC4D0);
-  background: var(--Schemes-On-Primary, #FFF);
+  border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
+  background: var(--Schemes-On-Primary, #fff);
   position: absolute;
   width: 200px;
   height: 68px;
   bottom: 15px;
-  left: 140px;
+  left: calc(50% - 100px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -478,7 +469,7 @@ body {
   width: 55px;
   height: 55px;
   border-radius: 50%;
-  border: 0.5px solid #CAC4D0;
+  border: 0.5px solid #cac4d0;
   background: transparent;
   display: flex;
   align-items: center;
@@ -495,5 +486,54 @@ body {
 .nav-item.active .material-symbols-outlined,
 .room-item.active .material-symbols-outlined {
   color: #fff;
+}
 
+/* ── Audio page ───────────────────────────────────────────────── */
+
+#full-screen{
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#vocal-mode-page {
+  margin: 0px;
+  background-color: #fff;
+  height: 100vh;
+}
+
+#text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding-top: 50px;
+}
+#mic-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+#audio-text {
+  color: #fff;
+  font-family: manropeMedium;
+  font-size: 22px;
+}
+#audio-desc {
+  color: #fff;
+  padding-bottom: 100px;
+}
+
+.mic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50px;
+  z-index: -1;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }

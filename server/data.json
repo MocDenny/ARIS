@@ -8,7 +8,7 @@
           {
             "name": "Ceiling light 1",
             "state": "on",
-            "brightness": 51
+            "brightness": "34"
           },
           {
             "name": "Bedside lamp 1",
@@ -28,7 +28,7 @@
         "curtains": [
           {
             "name": "Window blind 1",
-            "state": "closed"
+            "state": "open"
           },
           {
             "name": "Window blind 2",
@@ -77,7 +77,7 @@
         ],
         "hvac": {
           "state": "off",
-          "target_temp": 19,
+          "target_temp": 29,
           "current_temp": 19,
           "fan": {
             "state": "off",

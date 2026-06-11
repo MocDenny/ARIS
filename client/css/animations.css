@@ -30,7 +30,6 @@
 }
 
 @keyframes glow {
-
   0%,
   100% {
     opacity: 0.85;
@@ -76,32 +75,92 @@
   animation: curtain-press 0.16s ease forwards;
 }
 
-/* ── Eco mode animation ────────────────────────────────────────────── */
+/* ── Vocal mode animation ────────────────────────────────────────────── */
 
-@keyframes drop {
-  from {
+#vocal-mode-page {
+  transition: background 0.3s;
+}
+
+.shadow {
+  display: block;
+  position: relative;
+  top: -62px;
+  left: 70px;
+  width: 50px;
+  height: 50px;
+  transform: rotate(-45deg) translate(-100px);
+
+  .circle {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    font-size: calc(50px / 7);
+    border-color: #fff;
+    border-style: solid;
+    border-width: 5px 5px 0 0;
+    border-radius: 0 100% 0 0;
+
     opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-  }
+    animation: wifianimation 3s infinite;
 
-  to {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    &.first {
+      animation-delay: 800ms;
+    }
+    &.second {
+      width: 5em;
+      height: 5em;
+      animation-delay: 400ms;
+    }
+    &.third {
+      width: 3em;
+      height: 3em;
+    }
   }
 }
 
-@keyframes fade-left {
-  from {
-    opacity: 0;
-    visibility: hidden;
-    transform: translateX(-10px);
+@keyframes wifianimation {
+  0% {
+    opacity: 0.8;
   }
-
-  to {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
+  5% {
+    opactiy: 1;
+  }
+  6% {
+    opactiy: 0.1;
+  }
+  100% {
+    opactiy: 0.1;
+  }
+}
+@keyframes wifianimation {
+  0% {
+    opacity: 0.8;
+  }
+  5% {
+    opactiy: 1;
+  }
+  6% {
+    opactiy: 0.1;
+  }
+  100% {
+    opactiy: 0.1;
+  }
+}
+@keyframes wifianimation {
+  0% {
+    opacity: 0.8;
+  }
+  5% {
+    opactiy: 1;
+  }
+  6% {
+    opactiy: 0.1;
+  }
+  100% {
+    opactiy: 0.1;
   }
 }
