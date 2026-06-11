@@ -28,22 +28,27 @@
   <div id="screen"></div>
 
   <!-- sidenav — sempre visibile tranne in eco/settings -->
-  <aside class="side-nav" id="side-nav" style="display: flex; flex-direction: column; gap: 10px;">
-    <div class="nav-pill" style="display: flex; flex-direction: column; gap: 10px;">
-      <button class="nav-item" id="nav-lights">Lights</button>
-      <button class="nav-item" id="nav-climate">Climate</button>
-      <button class="nav-item" id="nav-blinds">Blinds</button>
+  <aside class="side-nav" id="side-nav" style="display: flex; flex-direction: column;">
+    <div class="nav-pill-1">
+      <button class="nav-item" id="nav-lights"><span class="material-symbols-outlined">lightbulb</span></button>
+      <button class="nav-item" id="nav-climate"><span class="material-symbols-outlined">thermostat</span></button>
+      <button class="nav-item" id="nav-blinds"><span class="material-symbols-outlined">roller_shades</span></button>
     </div>
-    <button class="nav-item nav-circle" id="nav-eco">Eco</button>
-    <button class="nav-item nav-circle" id="nav-settings">Settings</button>
+    <div class="nav-pill-2">
+      <button class="nav-item nav-circle" id="nav-eco"><span class="material-symbols-outlined">eco</span></button>
+      <button class="nav-item nav-circle" id="nav-settings"><span
+          class="material-symbols-outlined">settings</span></button>
+    </div>
   </aside>
 
   <!-- roombar — sempre visibile tranne in eco/settings -->
   <nav class="room-bar" id="room-bar">
-    <button class="nav-item" data-action="set-room" data-value="bedroom" id="nav-bedroom">Bedroom</button>
-    <button class="nav-item" data-action="set-room" data-value="bathroom" id="nav-bathroom">Bathroom</button>
-    <button class="nav-item" data-action="set-room" data-value="living_room" id="nav-living_room">Living
-      Room</button>
+    <button class="room-item" data-action="set-room" data-value="bedroom" id="nav-bedroom"><span
+        class="material-symbols-outlined">bed</span></button>
+    <button class="room-item" data-action="set-room" data-value="bathroom" id="nav-bathroom"><span
+        class="material-symbols-outlined">bathtub</span></button>
+    <button class="room-item" data-action="set-room" data-value="living_room" id="nav-living_room"><span
+        class="material-symbols-outlined">weekend</span></button>
   </nav>
 
   <script type="module" src="js/app.js"></script>

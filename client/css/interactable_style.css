@@ -43,6 +43,53 @@
   left: 4px;
 }
 
+
+/* ── Toggle Eco ────────────────────────────────────────────────── */
+.toggle-eco {
+  width: 52px;
+  height: 32px;
+  border-radius: 16px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: background-color 0.25s ease;
+  flex-shrink: 0;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.toggle-eco.on {
+  background: #fff;
+}
+
+.toggle-eco.off {
+  background: #d8d8d6;
+}
+
+.toggle-eco-knob {
+  position: absolute;
+  top: 4px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+
+.toggle-eco.on .toggle-eco-knob {
+  left: 24px;
+  background: #322F35;
+}
+
+.toggle-eco.off .toggle-eco-knob {
+  left: 4px;
+  background: #fff;
+}
+
+
 /* ── Temperature Setter ────────────────────────────────────────────────── */
 
 .value-setter-row {
