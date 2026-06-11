@@ -110,8 +110,7 @@ const recordingStarted = async (req, res) => {
   // Send socket message to client
   const sockets = await io.fetchSockets();
   if (sockets.length == 0) {
-    console.warn('[Server] Nessun client connesso via Socket.IO, salto segnale recordingStarted');
-    return res.status(200).json('Nessun client connesso, segnale saltato');
+    return res.status(400).json('No client connected to server');
   }
   sockets[0].emit('recordingStarted');
   return res.status(200).json('Successfully sent signal');
@@ -121,8 +120,7 @@ const recordingStopped = async (req, res) => {
   // Send socket message to client
   const sockets = await io.fetchSockets();
   if (sockets.length == 0) {
-    console.warn('[Server] Nessun client connesso via Socket.IO, salto segnale recordingStopped');
-    return res.status(200).json('Nessun client connesso, segnale saltato');
+    return res.status(400).json('No client connected to server');
   }
   sockets[0].emit('recordingStopped');
   return res.status(200).json('Successfully sent signal');
