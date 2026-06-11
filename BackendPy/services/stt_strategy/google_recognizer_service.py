@@ -156,7 +156,12 @@ class GoogleRecognizerService(RecognizerService):
             return None
         return self._recognize_audio(audio)
 
-    def listen_and_recognize_ptt(self, key: str = "space") -> Optional[str]:
+    def listen_and_recognize_ptt(
+        self,
+        key: str = "space",
+        on_start: Optional[callable] = None,
+        on_stop: Optional[callable] = None,
+    ) -> Optional[str]:
         """
         Push-to-talk: registra audio SOLO mentre il tasto `key` è premuto.
         Rilascia il tasto per fermare e avviare il riconoscimento Google.
@@ -188,6 +193,13 @@ class GoogleRecognizerService(RecognizerService):
         print(f"[PTT] Tieni premuto '{key}' per parlare...")
         kb.wait(key, suppress=False)
 
+        # --- Esegui la callback di inizio se definita ---
+        if on_start:
+            try:
+                on_start()
+            except Exception as e:
+                print(f"[PTT] Errore in on_start: {e}")
+
         # --- Avvia la registrazione finché il tasto è tenuto ---
         print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
 
@@ -209,6 +221,13 @@ class GoogleRecognizerService(RecognizerService):
             stream.stop_stream()
             stream.close()
             p.terminate()
+
+        # --- Esegui la callback di fine se definita ---
+        if on_stop:
+            try:
+                on_stop()
+            except Exception as e:
+                print(f"[PTT] Errore in on_stop: {e}")
 
         if not frames:
             print("[PTT] Nessun audio registrato (tasto rilasciato subito).")

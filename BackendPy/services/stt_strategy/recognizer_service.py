@@ -39,10 +39,16 @@ class RecognizerService(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def listen_and_recognize_ptt(self, key: str = "space") -> Optional[str]:
+    def listen_and_recognize_ptt(
+        self,
+        key: str = "space",
+        on_start: Optional[callable] = None,
+        on_stop: Optional[callable] = None,
+    ) -> Optional[str]:
         """
         Push-to-talk: registra audio SOLO mentre il tasto `key` è tenuto premuto.
         Rilascia il tasto per fermare la registrazione e avviare il riconoscimento.
         Ritorna il testo riconosciuto oppure None.
         """
         raise NotImplementedError
+
