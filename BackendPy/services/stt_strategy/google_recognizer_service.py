@@ -159,39 +159,65 @@ class GoogleRecognizerService(RecognizerService):
     def listen_and_recognize_ptt(
         self,
         key: str = "space",
+        gpio_pin: int | None = None,
         on_start: Optional[callable] = None,
         on_stop: Optional[callable] = None,
     ) -> Optional[str]:
         """
-        Push-to-talk: registra audio SOLO mentre il tasto `key` è premuto.
-        Rilascia il tasto per fermare e avviare il riconoscimento Google.
-
-        Args:
-            key: nome del tasto (es. "space", "ctrl", "F1", "r", ...).
-                 Usa i nomi della libreria `keyboard`.
+        Push-to-talk: registra audio SOLO mentre il tasto `key` o il `gpio_pin` è tenuto premuto.
+        Rilascia il tasto/pulsante per fermare e avviare il riconoscimento Google.
         """
-        try:
-            import keyboard as kb
-        except ImportError:
-            print("[PTT] ERRORE: libreria 'keyboard' non installata. Esegui: pip install keyboard")
-            return None
+        use_gpio = False
+        if gpio_pin is not None:
+            try:
+                import RPi.GPIO as GPIO
+                use_gpio = True
+            except ImportError:
+                print(f"[PTT] RPi.GPIO non trovato. Fallback al tasto tastiera: '{key}'")
+                use_gpio = False
+
+        if use_gpio:
+            import RPi.GPIO as GPIO
+            import time
+            # Utilizza la numerazione BCM per i pin
+            GPIO.setmode(GPIO.BCM)
+            # Imposta il pin con pull-up interno
+            GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+            
+            print(f"[PTT] Premi il pulsante sul GPIO {gpio_pin} per iniziare a parlare...")
+            try:
+                # Il pulsante è a HIGH (1) se non premuto, va a LOW (0) se premuto
+                while GPIO.input(gpio_pin) == GPIO.HIGH:
+                    time.sleep(0.02)
+            except KeyboardInterrupt:
+                return None
+        else:
+            try:
+                import keyboard as kb
+            except ImportError:
+                print("[PTT] ERRORE: libreria 'keyboard' non installata. Esegui: pip install keyboard")
+                return None
+                
+            print(f"[PTT] Tieni premuto '{key}' per parlare...")
+            try:
+                kb.wait(key, suppress=False)
+            except KeyboardInterrupt:
+                return None
 
         try:
             import pyaudio
         except ImportError:
             print("[PTT] ERRORE: libreria 'pyaudio' non installata. Esegui: pip install pyaudio")
+            if use_gpio:
+                import RPi.GPIO as GPIO
+                GPIO.cleanup(gpio_pin)
             return None
-
 
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
         RATE = 16000
         SAMPLE_WIDTH = 2  # paInt16 = 2 bytes per campione
-
-        # --- Attendi la pressione del tasto ---
-        print(f"[PTT] Tieni premuto '{key}' per parlare...")
-        kb.wait(key, suppress=False)
 
         # --- Esegui la callback di inizio se definita ---
         if on_start:
@@ -200,8 +226,11 @@ class GoogleRecognizerService(RecognizerService):
             except Exception as e:
                 print(f"[PTT] Errore in on_start: {e}")
 
-        # --- Avvia la registrazione finché il tasto è tenuto ---
-        print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
+        # --- Avvia la registrazione finché il tasto/pulsante è tenuto ---
+        if use_gpio:
+            print("[PTT] 🔴 Registrazione in corso... rilascia il pulsante per fermare.")
+        else:
+            print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
 
         p = pyaudio.PyAudio()
         stream = p.open(
@@ -214,13 +243,23 @@ class GoogleRecognizerService(RecognizerService):
 
         frames = []
         try:
-            while kb.is_pressed(key):
-                data = stream.read(CHUNK, exception_on_overflow=False)
-                frames.append(data)
+            if use_gpio:
+                import RPi.GPIO as GPIO
+                # Registra finché il pulsante è premuto (LOW)
+                while GPIO.input(gpio_pin) == GPIO.LOW:
+                    data = stream.read(CHUNK, exception_on_overflow=False)
+                    frames.append(data)
+            else:
+                while kb.is_pressed(key):
+                    data = stream.read(CHUNK, exception_on_overflow=False)
+                    frames.append(data)
         finally:
             stream.stop_stream()
             stream.close()
             p.terminate()
+            if use_gpio:
+                import RPi.GPIO as GPIO
+                GPIO.cleanup(gpio_pin)
 
         # --- Esegui la callback di fine se definita ---
         if on_stop:
@@ -230,7 +269,7 @@ class GoogleRecognizerService(RecognizerService):
                 print(f"[PTT] Errore in on_stop: {e}")
 
         if not frames:
-            print("[PTT] Nessun audio registrato (tasto rilasciato subito).")
+            print("[PTT] Nessun audio registrato (pulsante rilasciato subito).")
             return None
 
         print("[PTT] ⬛ Registrazione fermata. Riconoscimento in corso...")
