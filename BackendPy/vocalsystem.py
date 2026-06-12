@@ -25,15 +25,14 @@ class VocalSystem:
                 resp.raise_for_status()
             except Exception as e:
                 print(f"[VocalSystem] ⚠️ Errore POST /recording/stop: {e}")
-        def on_stop1():
-            pass
+
 
         while True:
             text = self.recognizer.listen_and_recognize_ptt(
                 key="space",
                 gpio_pin=17,
                 on_start=on_start,
-                on_stop=on_stop1
+                on_stop=on_stop
             )
             if not text:
                 continue
@@ -70,7 +69,7 @@ class VocalSystem:
                     print(f"[VocalSystem] ✅ Configurazione JSON aggiornata sul server via /recording/update")
                 except Exception as e:
                     print(f"[VocalSystem] ⚠️ Errore POST /recording/update: {e}")
-            on_stop()
+        
 
 
 if __name__ == "__main__":
