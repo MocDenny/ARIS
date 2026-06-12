@@ -26,12 +26,7 @@ class VocalSystem:
             except Exception as e:
                 print(f"[VocalSystem] ⚠️ Errore POST /recording/stop: {e}")
         def on_stop1():
-            try:
-                print("[VocalSystem] 📡 Invio POST /recording/stop...")
-                resp = requests.post(f"{BACKEND_URL}/recording/stop/null", timeout=2)
-                resp.raise_for_status()
-            except Exception as e:
-                print(f"[VocalSystem] ⚠️ Errore POST /recording/stop: {e}")
+            pass
 
         while True:
             text = self.recognizer.listen_and_recognize_ptt(
