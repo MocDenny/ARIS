@@ -43,21 +43,22 @@ AudioData = sr.AudioData
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from stt_strategy.recognizer_service import RecognizerService
-# Context manager per sopprimere stderr a livello C (ALSA warnings)
+# Context manager per sopprimere stderr a livello C (ALSA/JACK warnings)
 @contextlib.contextmanager
 def no_alsa_error():
+    """Silenzia i warning di ALSA/JACK reindirizzando stderr a /dev/null a livello OS."""
     try:
-        asound = ctypes.cdll.LoadLibrary('libasound.so')
-        asound.snd_lib_error_set_handler(None)
-        yield
-    except OSError:
+        dev_null = os.open(os.devnull, os.O_WRONLY)
+        old_stderr = os.dup(2)
+        os.dup2(dev_null, 2)
+        os.close(dev_null)
         try:
-            asound = ctypes.cdll.LoadLibrary('libasound.so.2')
-            asound.snd_lib_error_set_handler(None)
             yield
-        except OSError:
-            # Se non trova libasound, fa nulla
-            yield
+        finally:
+            os.dup2(old_stderr, 2)
+            os.close(old_stderr)
+    except Exception:
+        yield
 
 class GoogleRecognizerService(RecognizerService):
     """
@@ -216,8 +217,36 @@ class GoogleRecognizerService(RecognizerService):
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
-        RATE = 16000
         SAMPLE_WIDTH = 2  # paInt16 = 2 bytes per campione
+
+        # Auto-detect sample rate supportato dal microfono
+        RATE = None
+        with no_alsa_error():
+            p_test = pyaudio.PyAudio()
+        try:
+            for try_rate in [16000, 44100, 48000, 8000]:
+                try:
+                    dev_info = p_test.get_default_input_device_info()
+                    supported = p_test.is_format_supported(
+                        try_rate,
+                        input_device=int(dev_info['index']),
+                        input_channels=CHANNELS,
+                        input_format=FORMAT,
+                    )
+                    if supported:
+                        RATE = try_rate
+                        print(f"[PTT] ✅ Sample rate {RATE} Hz supportato dal microfono.")
+                        break
+                except ValueError:
+                    continue
+        except Exception as e:
+            print(f"[PTT] ⚠️ Errore rilevamento sample rate: {e}")
+        finally:
+            p_test.terminate()
+
+        if RATE is None:
+            RATE = 44100  # Fallback sicuro per la maggior parte dei microfoni USB
+            print(f"[PTT] ⚠️ Nessun sample rate verificato, uso fallback: {RATE} Hz")
 
         p = None
         stream = None
@@ -238,7 +267,8 @@ class GoogleRecognizerService(RecognizerService):
             else:
                 print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
 
-            p = pyaudio.PyAudio()
+            with no_alsa_error():
+                p = pyaudio.PyAudio()
 
             stream = p.open(
                 format=FORMAT,
