@@ -42,6 +42,7 @@ class RecognizerService(ABC):
     def listen_and_recognize_ptt(
         self,
         key: str = "space",
+        gpio_pin: int | None = None,
         on_start: Optional[callable] = None,
         on_stop: Optional[callable] = None,
     ) -> Optional[str]:

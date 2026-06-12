@@ -29,6 +29,7 @@ class VocalSystem:
         while True:
             text = self.recognizer.listen_and_recognize_ptt(
                 key="space",
+                gpio_pin=17,
                 on_start=on_start,
                 on_stop=on_stop
             )
@@ -40,7 +41,7 @@ class VocalSystem:
             # GET /room → ottieni il JSON della stanza come dizionario
             try:
                 roomjsonContext = requests.get(f"{BACKEND_URL}/config", timeout=3).json() #RICHIESTA DEL JSON
-                print(f"[VocalSystem] 📁 JSON Stanza: {roomjsonContext}")
+                #print(f"[VocalSystem] 📁 JSON Stanza: {roomjsonContext}")
             except Exception as e:
                 print(f"[VocalSystem] ⚠️ Errore GET /room: {e}")
                 roomjsonContext = None
