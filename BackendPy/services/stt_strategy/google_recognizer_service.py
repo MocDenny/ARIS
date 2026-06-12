@@ -219,33 +219,37 @@ class GoogleRecognizerService(RecognizerService):
         RATE = 16000
         SAMPLE_WIDTH = 2  # paInt16 = 2 bytes per campione
 
-        # --- Esegui la callback di inizio se definita ---
-        if on_start:
-            try:
-                on_start()
-            except Exception as e:
-                print(f"[PTT] Errore in on_start: {e}")
-
-        # --- Avvia la registrazione finché il tasto/pulsante è tenuto ---
-        if use_gpio:
-            print("[PTT] 🔴 Registrazione in corso... rilascia il pulsante per fermare.")
-        else:
-            print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
-
-        p = pyaudio.PyAudio()
-        stream = p.open(
-            format=FORMAT,
-            channels=CHANNELS,
-            rate=RATE,
-            input=True,
-            frames_per_buffer=CHUNK,
-        )
-
+        p = None
+        stream = None
         frames = []
+        recording_started = False
+
         try:
+            # --- Esegui la callback di inizio se definita ---
+            if on_start:
+                try:
+                    on_start()
+                    recording_started = True
+                except Exception as e:
+                    print(f"[PTT] Errore in on_start: {e}")
+
+            if use_gpio:
+                print("[PTT] 🔴 Registrazione in corso... rilascia il pulsante per fermare.")
+            else:
+                print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
+
+            p = pyaudio.PyAudio()
+
+            stream = p.open(
+                format=FORMAT,
+                channels=CHANNELS,
+                rate=RATE,
+                input=True,
+                frames_per_buffer=CHUNK,
+            )
+
             if use_gpio:
                 import RPi.GPIO as GPIO
-                # Registra finché il pulsante è premuto (LOW)
                 while GPIO.input(gpio_pin) == GPIO.LOW:
                     data = stream.read(CHUNK, exception_on_overflow=False)
                     frames.append(data)
@@ -253,20 +257,38 @@ class GoogleRecognizerService(RecognizerService):
                 while kb.is_pressed(key):
                     data = stream.read(CHUNK, exception_on_overflow=False)
                     frames.append(data)
-        finally:
-            stream.stop_stream()
-            stream.close()
-            p.terminate()
-            if use_gpio:
-                import RPi.GPIO as GPIO
-                GPIO.cleanup(gpio_pin)
 
-        # --- Esegui la callback di fine se definita ---
-        if on_stop:
+        except Exception as e:
+            print(f"[PTT] Errore durante registrazione: {e}")
+
+        finally:
             try:
-                on_stop()
+                if stream is not None:
+                    stream.stop_stream()
+                    stream.close()
             except Exception as e:
-                print(f"[PTT] Errore in on_stop: {e}")
+                print(f"[PTT] Errore chiusura stream: {e}")
+
+            try:
+                if p is not None:
+                    p.terminate()
+            except Exception as e:
+                print(f"[PTT] Errore chiusura PyAudio: {e}")
+
+            if use_gpio:
+                try:
+                    import RPi.GPIO as GPIO
+                    GPIO.cleanup(gpio_pin)
+                except Exception as e:
+                    print(f"[PTT] Errore GPIO cleanup: {e}")
+
+            # IMPORTANTISSIMO: manda sempre release/stop al backend
+            if recording_started and on_stop:
+                try:
+                    on_stop()
+                    print("[PTT] ✅ Release/stop inviato al backend.")
+                except Exception as e:
+                    print(f"[PTT] Errore in on_stop: {e}")
 
         if not frames:
             print("[PTT] Nessun audio registrato (pulsante rilasciato subito).")
