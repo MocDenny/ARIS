@@ -453,7 +453,7 @@ body {
   background: var(--Schemes-On-Primary, #fff);
   position: absolute;
   width: 200px;
-  height: 68px;
+  height: 100px;/*68px;*/
   bottom: 15px;
   left: calc(50% - 100px);
   display: flex;
@@ -464,8 +464,8 @@ body {
 }
 
 .room-item {
-  width: 55px;
-  height: 55px;
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   border: 0.5px solid #cac4d0;
   background: transparent;
