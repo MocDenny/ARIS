@@ -38,13 +38,17 @@ async function notifyArduino(data) {
     });
     if (response.ok) {
       const result = await response.json();
-      console.log(`[Arduino Bridge] ✅ Sync OK — ${result.commands_sent} comandi inviati`);
+      console.log(
+        `[Arduino Bridge] ✅ Sync OK — ${result.commands_sent} comandi inviati`
+      );
     } else {
       console.warn(`[Arduino Bridge] ⚠️ Risposta ${response.status}`);
     }
   } catch (err) {
     // Il sistema funziona anche senza Arduino — non bloccare
-    console.warn(`[Arduino Bridge] ⚠️ Bridge non raggiungibile: ${err.message}`);
+    console.warn(
+      `[Arduino Bridge] ⚠️ Bridge non raggiungibile: ${err.message}`
+    );
   }
 }
 
@@ -102,12 +106,6 @@ const updateData = (req, res) => {
   }
   // Notifica il bridge Arduino con i dati aggiornati
   notifyArduino(req.body);
-  // Send socket message to client
-  const sockets = await io.fetchSockets();
-  if (sockets.length == 0) {
-    return res.status(400).json('No client connected to server');
-  }
-  sockets[0].emit('updatedContent');
   return res.status(200).json('Successfully updated json');
 };
 
@@ -152,7 +150,12 @@ const updateDataSection = async (req, res) => {
   const result = await wrapper.updateData(mergedData);
   // Notifica il bridge Arduino con i dati aggiornati (merge completo)
   notifyArduino(mergedData);
-
+  // Send socket message to client
+  const sockets = await io.fetchSockets();
+  if (sockets.length == 0) {
+    return res.status(400).json('No client connected to server');
+  }
+  sockets[0].emit('updatedContent');
   return res.json(result);
 };
 
