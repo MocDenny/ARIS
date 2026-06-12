@@ -26,8 +26,10 @@ socket.on('recordingStopped', () => {
       .getElementById('room-bar')
       .style.setProperty('visibility', 'visible');
 
-    setTimeout(() => {
-      render();
-    }, 600);
+    render();
   }
+});
+
+socket.on('updatedContent', () => {
+  render();
 });
