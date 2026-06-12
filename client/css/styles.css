@@ -44,6 +44,7 @@ body {
   font-size: 18px;
   background: #fff;
   color: #000;
+  cursor: none;
 }
 
 /* ── Device ────────────────────────────────────────────────── */
@@ -199,7 +200,6 @@ body {
   aspect-ratio: 1/1;
   border-radius: 100px;
   border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
-  cursor: pointer;
   transition: transform 0.15s ease;
 }
 
@@ -319,7 +319,6 @@ body {
   aspect-ratio: 1/1;
   border-radius: 100px;
   border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
-  cursor: pointer;
   transition: transform 0.15s ease;
 }
 
@@ -400,7 +399,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: background 0.2s;
   padding: 0;
 }
@@ -474,7 +472,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: background 0.2s;
   padding: 0;
 }
