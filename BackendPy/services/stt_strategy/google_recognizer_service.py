@@ -185,11 +185,17 @@ class GoogleRecognizerService(RecognizerService):
             # Imposta il pin con pull-up interno
             GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             
+            DEBOUNCE_MS = 0.05  # 50ms di debounce per confermare la pressione
+            
             print(f"[PTT] Premi il pulsante sul GPIO {gpio_pin} per iniziare a parlare...")
             try:
-                # Il pulsante è a HIGH (1) se non premuto, va a LOW (0) se premuto
-                while GPIO.input(gpio_pin) == GPIO.HIGH:
-                    time.sleep(0.02)
+                # Aspetta che il pulsante vada a LOW (premuto)
+                while True:
+                    if GPIO.input(gpio_pin) == GPIO.LOW:
+                        time.sleep(DEBOUNCE_MS)  # Aspetta per confermare
+                        if GPIO.input(gpio_pin) == GPIO.LOW:
+                            break  # Pressione confermata!
+                    time.sleep(0.01)
             except KeyboardInterrupt:
                 return None
         else:
@@ -280,9 +286,20 @@ class GoogleRecognizerService(RecognizerService):
 
             if use_gpio:
                 import RPi.GPIO as GPIO
-                while GPIO.input(gpio_pin) == GPIO.LOW:
-                    data = stream.read(CHUNK, exception_on_overflow=False)
-                    frames.append(data)
+                import time
+                BOUNCE_TOLERANCE = 0.10  # 100ms — se il pulsante "stacca" per meno di questo, ignora
+                while True:
+                    if GPIO.input(gpio_pin) == GPIO.LOW:
+                        # Pulsante ancora premuto → registra normalmente
+                        data = stream.read(CHUNK, exception_on_overflow=False)
+                        frames.append(data)
+                    else:
+                        # Pulsante rilasciato — aspetta un attimo per vedere se è bouncing
+                        time.sleep(BOUNCE_TOLERANCE)
+                        if GPIO.input(gpio_pin) == GPIO.HIGH:
+                            # Ancora rilasciato dopo 100ms → l'utente ha davvero rilasciato
+                            break
+                        # Altrimenti era solo bouncing, continua a registrare
             else:
                 while kb.is_pressed(key):
                     data = stream.read(CHUNK, exception_on_overflow=False)
