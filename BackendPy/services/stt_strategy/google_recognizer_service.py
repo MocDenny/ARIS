@@ -46,18 +46,22 @@ from stt_strategy.recognizer_service import RecognizerService
 # Context manager per sopprimere stderr a livello C (ALSA warnings)
 @contextlib.contextmanager
 def no_alsa_error():
+    asound = None
     try:
         asound = ctypes.cdll.LoadLibrary('libasound.so')
-        asound.snd_lib_error_set_handler(None)
-        yield
     except OSError:
         try:
             asound = ctypes.cdll.LoadLibrary('libasound.so.2')
-            asound.snd_lib_error_set_handler(None)
-            yield
         except OSError:
-            # Se non trova libasound, fa nulla
-            yield
+            pass
+
+    if asound:
+        try:
+            asound.snd_lib_error_set_handler(None)
+        except Exception:
+            pass
+
+    yield
 
 class GoogleRecognizerService(RecognizerService):
     """
