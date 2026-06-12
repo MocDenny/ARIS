@@ -43,21 +43,22 @@ AudioData = sr.AudioData
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from stt_strategy.recognizer_service import RecognizerService
-# Context manager per sopprimere stderr a livello C (ALSA warnings)
+# Context manager per sopprimere stderr a livello C (ALSA/JACK warnings)
 @contextlib.contextmanager
 def no_alsa_error():
+    """Silenzia i warning di ALSA/JACK reindirizzando stderr a /dev/null a livello OS."""
     try:
-        asound = ctypes.cdll.LoadLibrary('libasound.so')
-        asound.snd_lib_error_set_handler(None)
-        yield
-    except OSError:
+        dev_null = os.open(os.devnull, os.O_WRONLY)
+        old_stderr = os.dup(2)
+        os.dup2(dev_null, 2)
+        os.close(dev_null)
         try:
-            asound = ctypes.cdll.LoadLibrary('libasound.so.2')
-            asound.snd_lib_error_set_handler(None)
             yield
-        except OSError:
-            # Se non trova libasound, fa nulla
-            yield
+        finally:
+            os.dup2(old_stderr, 2)
+            os.close(old_stderr)
+    except Exception:
+        yield
 
 class GoogleRecognizerService(RecognizerService):
     """
@@ -184,11 +185,17 @@ class GoogleRecognizerService(RecognizerService):
             # Imposta il pin con pull-up interno
             GPIO.setup(gpio_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
             
+            DEBOUNCE_MS = 0.05  # 50ms di debounce per confermare la pressione
+            
             print(f"[PTT] Premi il pulsante sul GPIO {gpio_pin} per iniziare a parlare...")
             try:
-                # Il pulsante è a HIGH (1) se non premuto, va a LOW (0) se premuto
-                while GPIO.input(gpio_pin) == GPIO.HIGH:
-                    time.sleep(0.02)
+                # Aspetta che il pulsante vada a LOW (premuto)
+                while True:
+                    if GPIO.input(gpio_pin) == GPIO.LOW:
+                        time.sleep(DEBOUNCE_MS)  # Aspetta per confermare
+                        if GPIO.input(gpio_pin) == GPIO.LOW:
+                            break  # Pressione confermata!
+                    time.sleep(0.01)
             except KeyboardInterrupt:
                 return None
         else:
@@ -216,8 +223,36 @@ class GoogleRecognizerService(RecognizerService):
         CHUNK = 1024
         FORMAT = pyaudio.paInt16
         CHANNELS = 1
-        RATE = 16000
         SAMPLE_WIDTH = 2  # paInt16 = 2 bytes per campione
+
+        # Auto-detect sample rate supportato dal microfono
+        RATE = None
+        with no_alsa_error():
+            p_test = pyaudio.PyAudio()
+        try:
+            for try_rate in [16000, 44100, 48000, 8000]:
+                try:
+                    dev_info = p_test.get_default_input_device_info()
+                    supported = p_test.is_format_supported(
+                        try_rate,
+                        input_device=int(dev_info['index']),
+                        input_channels=CHANNELS,
+                        input_format=FORMAT,
+                    )
+                    if supported:
+                        RATE = try_rate
+                        print(f"[PTT] ✅ Sample rate {RATE} Hz supportato dal microfono.")
+                        break
+                except ValueError:
+                    continue
+        except Exception as e:
+            print(f"[PTT] ⚠️ Errore rilevamento sample rate: {e}")
+        finally:
+            p_test.terminate()
+
+        if RATE is None:
+            RATE = 44100  # Fallback sicuro per la maggior parte dei microfoni USB
+            print(f"[PTT] ⚠️ Nessun sample rate verificato, uso fallback: {RATE} Hz")
 
         p = None
         stream = None
@@ -238,7 +273,8 @@ class GoogleRecognizerService(RecognizerService):
             else:
                 print("[PTT] 🔴 Registrazione in corso... rilascia il tasto per fermare.")
 
-            p = pyaudio.PyAudio()
+            with no_alsa_error():
+                p = pyaudio.PyAudio()
 
             stream = p.open(
                 format=FORMAT,
@@ -250,9 +286,20 @@ class GoogleRecognizerService(RecognizerService):
 
             if use_gpio:
                 import RPi.GPIO as GPIO
-                while GPIO.input(gpio_pin) == GPIO.LOW:
-                    data = stream.read(CHUNK, exception_on_overflow=False)
-                    frames.append(data)
+                import time
+                BOUNCE_TOLERANCE = 0.10  # 100ms — se il pulsante "stacca" per meno di questo, ignora
+                while True:
+                    if GPIO.input(gpio_pin) == GPIO.LOW:
+                        # Pulsante ancora premuto → registra normalmente
+                        data = stream.read(CHUNK, exception_on_overflow=False)
+                        frames.append(data)
+                    else:
+                        # Pulsante rilasciato — aspetta un attimo per vedere se è bouncing
+                        time.sleep(BOUNCE_TOLERANCE)
+                        if GPIO.input(gpio_pin) == GPIO.HIGH:
+                            # Ancora rilasciato dopo 100ms → l'utente ha davvero rilasciato
+                            break
+                        # Altrimenti era solo bouncing, continua a registrare
             else:
                 while kb.is_pressed(key):
                     data = stream.read(CHUNK, exception_on_overflow=False)
