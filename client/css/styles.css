@@ -448,11 +448,12 @@ body {
 
 /* ── RoomBar ───────────────────────────────────────────────── */
 .room-bar {
-  border-radius: 36px;
+  border-radius: 50px;
   border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   background: var(--Schemes-On-Primary, #fff);
   position: absolute;
-  width: 200px;
+  /*width: 200px;*/
+  padding: 0px 10px;
   height: 100px;/*68px;*/
   bottom: 15px;
   left: calc(50% - 100px);
