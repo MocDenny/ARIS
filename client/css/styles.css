@@ -60,7 +60,7 @@ body {
   position: absolute;
   top: 0;
   left: 0;
-  right: 104px;
+  right: 80px;
   /* space for sidenav */
   bottom: 80px;
   /* space for roombar */
@@ -379,8 +379,7 @@ body {
   position: absolute;
   top: 0;
   right: 0;
-  /*width: 80px;*/
-  margin-right: 8px;
+  width: 80px;
   height: calc(100% - 80px);
   display: flex;
   flex-direction: column;
@@ -391,8 +390,8 @@ body {
 }
 
 .nav-item {
-  width: 80px;
-  height: 80px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   border: 0.5px solid #cac4d0;
   background: transparent;
@@ -411,13 +410,14 @@ body {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  border-radius: 50px;
+  border-radius: 36px;
   border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   background: var(--Schemes-On-Primary, #fff);
-  /*height: 200px;*/
+  width: 68px;
+  height: 200px;
   align-items: center;
   justify-content: center;
-  padding: 10px 8px;
+  padding: 8px;
 }
 
 .nav-pill-2 {
@@ -447,15 +447,14 @@ body {
 
 /* ── RoomBar ───────────────────────────────────────────────── */
 .room-bar {
-  border-radius: 50px;
+  border-radius: 36px;
   border: 0.5px solid var(--Schemes-Outline-Variant, #cac4d0);
   background: var(--Schemes-On-Primary, #fff);
   position: absolute;
-  /*width: 200px;*/
-  padding: 0px 10px;
-  height: 100px;/*68px;*/
+  width: 200px;
+  height: 68px;
   bottom: 15px;
-  left: calc(50% - 133px);
+  left: calc(50% - 100px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -464,8 +463,8 @@ body {
 }
 
 .room-item {
-  width: 80px;
-  height: 80px;
+  width: 55px;
+  height: 55px;
   border-radius: 50%;
   border: 0.5px solid #cac4d0;
   background: transparent;
