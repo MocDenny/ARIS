@@ -1,19 +1,18 @@
-#!/bin/bash
+# Chiude Chromium vecchi
+pkill -f chromium 2>/dev/null || true
 
-export DISPLAY=:0
-export XAUTHORITY=/root/.Xauthority
+sleep 3
 
-sleep 15
-
-for i in $(seq 1 60); do
-    if ss -ltn | grep -q ":3000"; then
-        break
-    fi
-    sleep 1
-done
-
-pkill -f "chromium.*localhost:3000" 2>/dev/null || true
-
-sleep 2
-
-/usr/bin/chromium --app=http://localhost:3000 --start-fullscreen --kiosk &
+# Avvia Chromium sul display DSI
+/usr/bin/chromium \
+  --kiosk \
+  --disable-gpu \
+  --disable-dev-shm-usage \
+  --disable-infobars \
+  --noerrdialogs \
+  --disable-session-crashed-bubble \
+  --disable-pinch \
+  --overscroll-history-navigation=0 \
+  --app=http://localhost:3000 \
+  --start-fullscreen \
+  >> /root/aris-chromium.log 2>&1 &
